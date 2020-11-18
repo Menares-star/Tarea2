@@ -36,10 +36,10 @@ func folderReader() string{
 
 	file := files[upload - 1]
 
-	reader := bufio.NewReader(os.Stdin)
+	reader := bufio.NewReader(os.Stdin) //habilita un lector
 	fmt.Println("Quieres subir '" + file + "'? [s/n]")
-    text, _ := reader.ReadString('\n')
-	
+    text, _ := reader.ReadString('\n')//el lector lee un string
+
 	if text == "s\n" {
 		fmt.Println("subien12")
 		return file
@@ -48,56 +48,67 @@ func folderReader() string{
 	}
 
 	return file
-	
+
 }
 
 func main() {
 
-	fileName := folderReader()
+	var cliente int
+	fmt.Println("Que tipo de cliente es?: ")
+	fmt.Println("1. Uploader")
+	fmt.Println("2. Downloader")
+	fmt.Println("Ingrese el número: ")
+	fmt.Scan(&cliente)
 
-	fileToBeChunked := "./Uploads/" + fileName
+	if cliente==1 {
+		fileName := folderReader()
 
-	file, err := os.Open(fileToBeChunked)
+		fileToBeChunked := "./Uploads/" + fileName
 
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
-
-	defer file.Close()
-
-	fileInfo, _ := file.Stat()
-
-	var fileSize int64 = fileInfo.Size()
-
-	const fileChunk = 250000 // 1 MB, change this to your requirement
-
-	// calculate total number of parts the file will be chunked into
-
-	totalPartsNum := uint64(math.Ceil(float64(fileSize) / float64(fileChunk)))
-
-	fmt.Printf("Splitting to %d pieces.\n", totalPartsNum)
-
-	for i := uint64(0); i < totalPartsNum; i++ {
-
-		partSize := int(math.Min(fileChunk, float64(fileSize-int64(i*fileChunk))))
-		partBuffer := make([]byte, partSize)
-
-		file.Read(partBuffer)
-
-		// write to disk
-		fileName := "bigfile_" + strconv.FormatUint(i, 10) + ".pdf"
-		_, err := os.Create(fileName)
+		file, err := os.Open(fileToBeChunked)
 
 		if err != nil {
-				fmt.Println(err)
-				os.Exit(1)
+			fmt.Println(err)
+			os.Exit(1)
 		}
 
-		// write/save buffer to disk
-		ioutil.WriteFile(fileName, partBuffer, os.ModeAppend)
+		defer file.Close()
 
-		fmt.Println("Split to : ", fileName)
+		fileInfo, _ := file.Stat()
+
+		var fileSize int64 = fileInfo.Size()
+
+		const fileChunk = 250000 // 1 MB, change this to your requirement
+
+		// calculate total number of parts the file will be chunked into
+
+		totalPartsNum := uint64(math.Ceil(float64(fileSize) / float64(fileChunk)))
+
+		fmt.Printf("Splitting to %d pieces.\n", totalPartsNum)
+
+		for i := uint64(0); i < totalPartsNum; i++ {
+
+			partSize := int(math.Min(fileChunk, float64(fileSize-int64(i*fileChunk))))
+			partBuffer := make([]byte, partSize) //inicializa un arreglo de tamaño partSize
+
+			file.Read(partBuffer)
+
+			// write to disk
+			fileName := "bigfile_" + strconv.FormatUint(i, 10) + ".pdf"
+			_, err := os.Create(fileName)
+
+			if err != nil {
+					fmt.Println(err)
+					os.Exit(1)
+			}
+
+			// write/save buffer to disk
+			ioutil.WriteFile(fileName, partBuffer, os.ModeAppend)
+
+			fmt.Println("Split to : ", fileName)
+		}
+	}else{
+		fmt.Println("Soy downloader!")
 	}
 
 }
