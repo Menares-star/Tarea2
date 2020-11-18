@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"log"
+
 	"fmt"
 	"io/ioutil"
 	"math"
@@ -79,14 +80,15 @@ func main() {
 		servers[2]="6000"
 		number:=random(0,3)
 		fmt.Println(servers[number])
-
+		var t time.Duration = 5000000000
 		/* CONEXION*/
-	   /*var conn *grpc.ClientConn
-	   conn, err := grpc.Dial(":8000", grpc.WithInsecure(), grpc.WithBlock())
+		//conn, err := grpc.Dial(":8000", grpc.WithInsecure(), grpc.WithBlock())
+	   var conn *grpc.ClientConn
+	   conn, err := grpc.Dial(":8000",grpc.WithInsecure(),grpc.WithBlock(),grpc.WithTimeout(t))
 	   if err != nil{
 	     log.Fatalf("could not connect: %s",err)
 	   }
-	   defer conn.Close()*/
+	   defer conn.Close()
 
 
 		/*ESCOGIENDO LIBRO*/
