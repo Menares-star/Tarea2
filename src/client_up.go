@@ -8,7 +8,14 @@ import (
 	"os"
 	"strconv"
 	"path/filepath"
+	"math/rand"
+	"time"
 )
+
+func random(min int, max int)int{
+	rand.Seed(time.Now().UnixNano())
+	return rand.Intn(max-min)+min
+}
 
 func folderReader() string{
 
@@ -61,7 +68,26 @@ func main() {
 	fmt.Scan(&cliente)
 
 	if cliente==1 {
+
+		servers:=make([]string,3)
+		servers[0]="8000"
+		servers[1]="7000"
+		servers[2]="6000"
+		number:=random(0,3)
+		fmt.Println(servers[number])
+
+		/* CONEXION*/
+	   var conn *grpc.ClientConn
+	   conn, err := grpc.Dial(":8000", grpc.WithInsecure(), grpc.WithBlock())
+	   if err != nil{
+	     log.Fatalf("could not connect: %s",err)
+	   }
+	   defer conn.Close()
+
+
+		/*ESCOGIENDO LIBRO*/
 		fileName := folderReader()
+
 
 		fileToBeChunked := "./Uploads/" + fileName
 
@@ -101,6 +127,7 @@ func main() {
 					fmt.Println(err)
 					os.Exit(1)
 			}
+
 
 			// write/save buffer to disk
 			ioutil.WriteFile(fileName, partBuffer, os.ModeAppend)
