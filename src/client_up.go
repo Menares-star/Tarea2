@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"log"
 	"fmt"
 	"io/ioutil"
 	"math"
@@ -10,6 +11,9 @@ import (
 	"path/filepath"
 	"math/rand"
 	"time"
+	//"golang.org/x/net/context"
+  "google.golang.org/grpc"
+	//"github.com/Menares-star/Tarea1/src/Mensajes"
 )
 
 func random(min int, max int)int{
@@ -77,12 +81,12 @@ func main() {
 		fmt.Println(servers[number])
 
 		/* CONEXION*/
-	   var conn *grpc.ClientConn
+	   /*var conn *grpc.ClientConn
 	   conn, err := grpc.Dial(":8000", grpc.WithInsecure(), grpc.WithBlock())
 	   if err != nil{
 	     log.Fatalf("could not connect: %s",err)
 	   }
-	   defer conn.Close()
+	   defer conn.Close()*/
 
 
 		/*ESCOGIENDO LIBRO*/
