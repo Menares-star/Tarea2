@@ -2,8 +2,8 @@ package main
 
 import (
 	"bufio"
-	"log"
-
+	//"log"
+	//"errors"
 	"fmt"
 	"io/ioutil"
 	"math"
@@ -63,6 +63,8 @@ func folderReader() string{
 
 }
 
+
+
 func main() {
 
 	var cliente int
@@ -75,20 +77,32 @@ func main() {
 	if cliente==1 {
 
 		servers:=make([]string,3)
-		servers[0]="8000"
-		servers[1]="7000"
-		servers[2]="6000"
-		number:=random(0,3)
-		fmt.Println(servers[number])
+		servers[0]=":8000"
+		servers[1]=":7000"
+		servers[2]=":6000"
+
 		var t time.Duration = 5000000000
 		/* CONEXION*/
 		//conn, err := grpc.Dial(":8000", grpc.WithInsecure(), grpc.WithBlock())
 	   var conn *grpc.ClientConn
-	   conn, err := grpc.Dial(":8000",grpc.WithInsecure(),grpc.WithBlock(),grpc.WithTimeout(t))
+	   conn, err := grpc.Dial(servers[0],grpc.WithInsecure(),grpc.WithBlock(),grpc.WithTimeout(t))
 	   if err != nil{
-	     log.Fatalf("could not connect: %s",err)
+	     fmt.Println("Servidor "+servers[0]+" no disponible: ",err)
+			 conn, err := grpc.Dial(servers[1],grpc.WithInsecure(),grpc.WithBlock(),grpc.WithTimeout(t))
+			 if err != nil{
+		     fmt.Println("Servidor "+servers[1]+" no disponible: ",err)
+				 conn, err := grpc.Dial(servers[2],grpc.WithInsecure(),grpc.WithBlock(),grpc.WithTimeout(t))
+				 if err != nil{
+			     fmt.Println("Servidor "+servers[2]+" no disponible: ",err)
+					 fmt.Println("TODOS LOS SERVIDORES ESTÁN CAIDOS")
+					 os.Exit(1)
+			   }
+				 defer conn.Close()
+		   }
+			 defer conn.Close()
 	   }
 	   defer conn.Close()
+
 
 
 		/*ESCOGIENDO LIBRO*/

@@ -4,8 +4,12 @@
 package Uploads
 
 import (
+	context "context"
 	fmt "fmt"
 	proto "github.com/golang/protobuf/proto"
+	grpc "google.golang.org/grpc"
+	codes "google.golang.org/grpc/codes"
+	status "google.golang.org/grpc/status"
 	math "math"
 )
 
@@ -20,11 +24,273 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
+type UploadStatusCode int32
+
+const (
+	UploadStatusCode_Unknown UploadStatusCode = 0
+	UploadStatusCode_Ok      UploadStatusCode = 1
+	UploadStatusCode_Failed  UploadStatusCode = 2
+)
+
+var UploadStatusCode_name = map[int32]string{
+	0: "Unknown",
+	1: "Ok",
+	2: "Failed",
+}
+
+var UploadStatusCode_value = map[string]int32{
+	"Unknown": 0,
+	"Ok":      1,
+	"Failed":  2,
+}
+
+func (x UploadStatusCode) String() string {
+	return proto.EnumName(UploadStatusCode_name, int32(x))
+}
+
+func (UploadStatusCode) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_1d3639ddf53b3fb5, []int{0}
+}
+
+type Chunk struct {
+	Content              []byte   `protobuf:"bytes,1,opt,name=Content,proto3" json:"Content,omitempty"`
+	Name                 string   `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Part                 int32    `protobuf:"varint,3,opt,name=part,proto3" json:"part,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *Chunk) Reset()         { *m = Chunk{} }
+func (m *Chunk) String() string { return proto.CompactTextString(m) }
+func (*Chunk) ProtoMessage()    {}
+func (*Chunk) Descriptor() ([]byte, []int) {
+	return fileDescriptor_1d3639ddf53b3fb5, []int{0}
+}
+
+func (m *Chunk) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_Chunk.Unmarshal(m, b)
+}
+func (m *Chunk) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_Chunk.Marshal(b, m, deterministic)
+}
+func (m *Chunk) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Chunk.Merge(m, src)
+}
+func (m *Chunk) XXX_Size() int {
+	return xxx_messageInfo_Chunk.Size(m)
+}
+func (m *Chunk) XXX_DiscardUnknown() {
+	xxx_messageInfo_Chunk.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Chunk proto.InternalMessageInfo
+
+func (m *Chunk) GetContent() []byte {
+	if m != nil {
+		return m.Content
+	}
+	return nil
+}
+
+func (m *Chunk) GetName() string {
+	if m != nil {
+		return m.Name
+	}
+	return ""
+}
+
+func (m *Chunk) GetPart() int32 {
+	if m != nil {
+		return m.Part
+	}
+	return 0
+}
+
+type UploadStatus struct {
+	Message              string           `protobuf:"bytes,1,opt,name=Message,proto3" json:"Message,omitempty"`
+	Code                 UploadStatusCode `protobuf:"varint,2,opt,name=Code,proto3,enum=Uploads.UploadStatusCode" json:"Code,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}         `json:"-"`
+	XXX_unrecognized     []byte           `json:"-"`
+	XXX_sizecache        int32            `json:"-"`
+}
+
+func (m *UploadStatus) Reset()         { *m = UploadStatus{} }
+func (m *UploadStatus) String() string { return proto.CompactTextString(m) }
+func (*UploadStatus) ProtoMessage()    {}
+func (*UploadStatus) Descriptor() ([]byte, []int) {
+	return fileDescriptor_1d3639ddf53b3fb5, []int{1}
+}
+
+func (m *UploadStatus) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_UploadStatus.Unmarshal(m, b)
+}
+func (m *UploadStatus) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_UploadStatus.Marshal(b, m, deterministic)
+}
+func (m *UploadStatus) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UploadStatus.Merge(m, src)
+}
+func (m *UploadStatus) XXX_Size() int {
+	return xxx_messageInfo_UploadStatus.Size(m)
+}
+func (m *UploadStatus) XXX_DiscardUnknown() {
+	xxx_messageInfo_UploadStatus.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_UploadStatus proto.InternalMessageInfo
+
+func (m *UploadStatus) GetMessage() string {
+	if m != nil {
+		return m.Message
+	}
+	return ""
+}
+
+func (m *UploadStatus) GetCode() UploadStatusCode {
+	if m != nil {
+		return m.Code
+	}
+	return UploadStatusCode_Unknown
+}
+
+func init() {
+	proto.RegisterEnum("Uploads.UploadStatusCode", UploadStatusCode_name, UploadStatusCode_value)
+	proto.RegisterType((*Chunk)(nil), "Uploads.Chunk")
+	proto.RegisterType((*UploadStatus)(nil), "Uploads.UploadStatus")
+}
+
 func init() { proto.RegisterFile("Uploads.proto", fileDescriptor_1d3639ddf53b3fb5) }
 
 var fileDescriptor_1d3639ddf53b3fb5 = []byte{
-	// 48 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0xe2, 0x0d, 0x2d, 0xc8, 0xc9,
-	0x4f, 0x4c, 0x29, 0xd6, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x62, 0x87, 0x72, 0x93, 0xd8, 0xc0,
-	0x7c, 0x63, 0x40, 0x00, 0x00, 0x00, 0xff, 0xff, 0x14, 0xb8, 0xb9, 0xd6, 0x20, 0x00, 0x00, 0x00,
+	// 229 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x6c, 0x90, 0x41, 0x4b, 0xc4, 0x30,
+	0x10, 0x85, 0x37, 0x75, 0x37, 0x65, 0xc7, 0xb5, 0x84, 0x01, 0x21, 0x7a, 0x2a, 0x3d, 0x05, 0xc1,
+	0x3d, 0x6c, 0x7f, 0x42, 0x51, 0xf1, 0x20, 0x42, 0xa4, 0x78, 0x8e, 0x36, 0x68, 0x69, 0x4d, 0x4a,
+	0x93, 0xea, 0xdf, 0x97, 0x26, 0x56, 0x44, 0xf6, 0x36, 0x2f, 0x79, 0xef, 0xcb, 0xcb, 0xc0, 0x59,
+	0x3d, 0xf4, 0x56, 0x35, 0x6e, 0x3f, 0x8c, 0xd6, 0x5b, 0x4c, 0x7f, 0x64, 0x71, 0x0f, 0x9b, 0xea,
+	0x7d, 0x32, 0x1d, 0x72, 0x48, 0x2b, 0x6b, 0xbc, 0x36, 0x9e, 0x93, 0x9c, 0x88, 0x9d, 0x5c, 0x24,
+	0x22, 0xac, 0x8d, 0xfa, 0xd0, 0x3c, 0xc9, 0x89, 0xd8, 0xca, 0x30, 0xcf, 0x67, 0x83, 0x1a, 0x3d,
+	0x3f, 0xc9, 0x89, 0xd8, 0xc8, 0x30, 0x17, 0xcf, 0xb0, 0x8b, 0xd4, 0x27, 0xaf, 0xfc, 0xe4, 0x66,
+	0xe2, 0x83, 0x76, 0x4e, 0xbd, 0xe9, 0x40, 0xdc, 0xca, 0x45, 0xe2, 0x35, 0xac, 0x2b, 0xdb, 0x44,
+	0x62, 0x76, 0xb8, 0xd8, 0x2f, 0xdd, 0xfe, 0xc6, 0x67, 0x83, 0x0c, 0xb6, 0xab, 0x12, 0xd8, 0xff,
+	0x1b, 0x3c, 0x85, 0xb4, 0x36, 0x9d, 0xb1, 0x5f, 0x86, 0xad, 0x90, 0x42, 0xf2, 0xd8, 0x31, 0x82,
+	0x00, 0xf4, 0x56, 0xb5, 0xbd, 0x6e, 0x58, 0x72, 0xb8, 0x81, 0xec, 0x6e, 0x8a, 0x29, 0x3d, 0x7e,
+	0xb6, 0xaf, 0x1a, 0x4b, 0xa0, 0x11, 0x83, 0xd9, 0xef, 0x8b, 0xe1, 0xef, 0x97, 0xe7, 0x47, 0x1b,
+	0x14, 0x2b, 0x41, 0x5e, 0x68, 0xd8, 0x57, 0xf9, 0x1d, 0x00, 0x00, 0xff, 0xff, 0x15, 0x25, 0x95,
+	0xc3, 0x40, 0x01, 0x00, 0x00,
+}
+
+// Reference imports to suppress errors if they are not otherwise used.
+var _ context.Context
+var _ grpc.ClientConn
+
+// This is a compile-time assertion to ensure that this generated file
+// is compatible with the grpc package it is being compiled against.
+const _ = grpc.SupportPackageIsVersion4
+
+// GuploadServiceClient is the client API for GuploadService service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
+type GuploadServiceClient interface {
+	Upload(ctx context.Context, opts ...grpc.CallOption) (GuploadService_UploadClient, error)
+}
+
+type guploadServiceClient struct {
+	cc *grpc.ClientConn
+}
+
+func NewGuploadServiceClient(cc *grpc.ClientConn) GuploadServiceClient {
+	return &guploadServiceClient{cc}
+}
+
+func (c *guploadServiceClient) Upload(ctx context.Context, opts ...grpc.CallOption) (GuploadService_UploadClient, error) {
+	stream, err := c.cc.NewStream(ctx, &_GuploadService_serviceDesc.Streams[0], "/Uploads.GuploadService/Upload", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &guploadServiceUploadClient{stream}
+	return x, nil
+}
+
+type GuploadService_UploadClient interface {
+	Send(*Chunk) error
+	CloseAndRecv() (*UploadStatus, error)
+	grpc.ClientStream
+}
+
+type guploadServiceUploadClient struct {
+	grpc.ClientStream
+}
+
+func (x *guploadServiceUploadClient) Send(m *Chunk) error {
+	return x.ClientStream.SendMsg(m)
+}
+
+func (x *guploadServiceUploadClient) CloseAndRecv() (*UploadStatus, error) {
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	m := new(UploadStatus)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+// GuploadServiceServer is the server API for GuploadService service.
+type GuploadServiceServer interface {
+	Upload(GuploadService_UploadServer) error
+}
+
+// UnimplementedGuploadServiceServer can be embedded to have forward compatible implementations.
+type UnimplementedGuploadServiceServer struct {
+}
+
+func (*UnimplementedGuploadServiceServer) Upload(srv GuploadService_UploadServer) error {
+	return status.Errorf(codes.Unimplemented, "method Upload not implemented")
+}
+
+func RegisterGuploadServiceServer(s *grpc.Server, srv GuploadServiceServer) {
+	s.RegisterService(&_GuploadService_serviceDesc, srv)
+}
+
+func _GuploadService_Upload_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(GuploadServiceServer).Upload(&guploadServiceUploadServer{stream})
+}
+
+type GuploadService_UploadServer interface {
+	SendAndClose(*UploadStatus) error
+	Recv() (*Chunk, error)
+	grpc.ServerStream
+}
+
+type guploadServiceUploadServer struct {
+	grpc.ServerStream
+}
+
+func (x *guploadServiceUploadServer) SendAndClose(m *UploadStatus) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func (x *guploadServiceUploadServer) Recv() (*Chunk, error) {
+	m := new(Chunk)
+	if err := x.ServerStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+var _GuploadService_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "Uploads.GuploadService",
+	HandlerType: (*GuploadServiceServer)(nil),
+	Methods:     []grpc.MethodDesc{},
+	Streams: []grpc.StreamDesc{
+		{
+			StreamName:    "Upload",
+			Handler:       _GuploadService_Upload_Handler,
+			ClientStreams: true,
+		},
+	},
+	Metadata: "Uploads.proto",
 }
