@@ -140,7 +140,7 @@ func main() {
 			file.Read(partBuffer)
 
 			// write to disk
-			fileName := "bigfile_" + strconv.FormatUint(i, 10) + ".pdf"
+			fileName := fileName[0:(len(fileName)-4)] +"_part_" + strconv.FormatUint(i, 10) + ".pdf"
 			_, err := os.Create(fileName)
 
 			if err != nil {
