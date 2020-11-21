@@ -6,7 +6,7 @@ import (
 	//"fmt"
 
 	"google.golang.org/grpc"
-	"github.com/Menares-star/Tarea1/src/Mensajes"
+	"github.com/Menares-star/Tarea2/src/Mensajes"
 )
 
 
@@ -17,13 +17,13 @@ func main() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 
-	s := ordenes.Server{}
+	//s := ordenes.Server{}
 
 	grpcServer := grpc.NewServer()
 
 	//REGISTRO DE SERVICIOS
-	ordenes.RegisterOrdenServiceServer(grpcServer, &s)
-	ordenes.RegisterSeguimientoServiceServer(grpcServer, &s)
+	//ordenes.RegisterOrdenServiceServer(grpcServer, &s)
+	//ordenes.RegisterSeguimientoServiceServer(grpcServer, &s)
 	//FIN REGISTRO DE SERVICIOS
 
 

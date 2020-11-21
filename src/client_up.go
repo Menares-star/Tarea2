@@ -14,7 +14,7 @@ import (
 	"time"
 	//"golang.org/x/net/context"
   "google.golang.org/grpc"
-	//"github.com/Menares-star/Tarea1/src/Mensajes"
+	//"github.com/Menares-star/Tarea2/src/Mensajes"
 )
 
 func random(min int, max int)int{
