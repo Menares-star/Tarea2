@@ -1,4 +1,4 @@
-package node1
+package main
 
 import (
 	"log"
