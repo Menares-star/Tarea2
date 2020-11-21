@@ -147,10 +147,22 @@ func main() {
 					fmt.Println(err)
 					os.Exit(1)
 			}
-
-
+			///STREAM DE CHUNKS
+			stream, err := client.RecordRoute(ctx)
+			if err != nil {
+				log.Fatalf("%v.RecordRoute(_) = _, %v", client, err)
+			}
+			for _, point := range points {
+				if err := stream.Send(point); err != nil {
+					log.Fatalf("%v.Send(%v) = %v", stream, point, err)
+				}
+			}
+			reply, err := stream.CloseAndRecv()
+			if err != nil {
+				log.Fatalf("%v.CloseAndRecv() got error %v, want %v", stream, err, nil)
+			}
 			// write/save buffer to disk
-			ioutil.WriteFile(fileName, partBuffer, os.ModeAppend)
+			//ioutil.WriteFile(fileName, partBuffer, os.ModeAppend)
 
 			fmt.Println("Split to : ", fileName)
 		}

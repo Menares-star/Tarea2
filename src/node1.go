@@ -16,12 +16,12 @@ func main() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 
-	s := ordenes.Server{}
+	s := Uploads.Server1{}
 
 	grpcServer := grpc.NewServer()
 
 	//REGISTRO DE SERVICIOS
-	//ordenes.RegisterOrdenServiceServer(grpcServer, &s)
+	Uploads.RegisterGuploadServiceServer(grpcServer, &s)
 	//ordenes.RegisterSeguimientoServiceServer(grpcServer, &s)
 	//FIN REGISTRO DE SERVICIOS
 
