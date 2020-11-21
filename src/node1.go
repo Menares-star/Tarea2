@@ -6,8 +6,10 @@ import (
 	"fmt"
 	"google.golang.org/grpc"
 	"github.com/Menares-star/Tarea2/src/Mensajes"
+
 )
 
+var save1 [] Uploads.Chunk
 
 func main() {
 
@@ -29,7 +31,9 @@ func main() {
 		log.Fatalf("failed to serve: %s", err)
 	}
 
-	fmt.Println(Uploads.save[0])
+	//grpcServer.Serve(lis).Close()
+
+	//fmt.Println(save1[0].Part)
 	//SEGUIMIENTOS
 	//FIN SEGUIMIENTOS
 	//COMUNICACION CON CAMIONES

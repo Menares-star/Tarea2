@@ -1,9 +1,5 @@
-module github.com/Menares-star/Tarea2/src
+module github.com/Menares-star/Tarea2
 
 go 1.14
 
-require (
-	github.com/golang/protobuf v1.4.3
-	golang.org/x/net v0.0.0-20201110031124-69a78807bb2b
-	google.golang.org/grpc v1.33.2
-)
+require github.com/Menares-star/Tarea2/src v0.0.0-20201121221444-31b4a854bef2 // indirect
