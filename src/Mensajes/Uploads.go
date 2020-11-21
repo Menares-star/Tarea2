@@ -3,10 +3,7 @@ package Uploads
 import (
 	"log"
   "golang.org/x/net/context"
-	"fmt"
 	"io/ioutil"
-	"math"
-	"os"
 	"time"
 
 )
@@ -22,6 +19,7 @@ func (s *Server1) Upload(stream GuploadService_UploadServer) error {
 	startTime := time.Now()
 	for i:=0;;i++ {
 		chunk, err := stream.Recv()
+		log.Printf("Ha llegado el chunk",chunk.Chunk.GetPart())
 		x[i] = append(x[i],chunk)
 		if err == io.EOF {
 			endTime := time.Now()
