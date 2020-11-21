@@ -2,34 +2,32 @@ package Uploads
 
 import (
 	"log"
-  "golang.org/x/net/context"
-	"io/ioutil"
-	"time"
+  //"golang.org/x/net/context"
+	"io"
 
 )
 
 type Server1 struct{
 
-	x:= make(map[int][]Chunk)
+	 x  map[int][]Chunk
 
 }
 
 func (s *Server1) Upload(stream GuploadService_UploadServer) error {
-
-	startTime := time.Now()
+	x := make(map[int][]Chunk)
 	for i:=0;;i++ {
-		chunk, err := stream.Recv()
-		log.Printf("Ha llegado el chunk",chunk.Chunk.GetPart())
-		x[i] = append(x[i],chunk)
+		str, err := stream.Recv()
+		log.Printf("Ha llegado el chunk",str.GetPart())
+		x[i] = append(x[i],*str)
 		if err == io.EOF {
-			endTime := time.Now()
-			return stream.SendAndClose(UploadStatus{
-				Message:   "Su estado es",
-				Code: enum.OK,
+			return SendAndClose(&UploadStatus{
+				Message:   "Su estado es OK",
 			})
 		}
 		if err != nil {
-			return err
+			return SendAndClose(&UploadStatus{
+				Message:   "Su estado es ERROR",
+			})
 		}
 	}
 }
