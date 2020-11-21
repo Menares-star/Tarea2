@@ -2,13 +2,14 @@ package main
 
 import (
 	"bufio"
-	//"log"
+	"log"
 	//"errors"
 	"fmt"
-	"io/ioutil"
+	//"io/ioutil"
 	"math"
 	"os"
 	"strconv"
+	//"bytes"
 	"path/filepath"
 	"math/rand"
 	"time"
@@ -16,6 +17,13 @@ import (
   "google.golang.org/grpc"
 	"github.com/Menares-star/Tarea2/src/Mensajes"
 )
+
+type Chunk struct{
+  Content []byte
+  Name string
+  Part int32
+}
+
 
 func random(min int, max int)int{
 	rand.Seed(time.Now().UnixNano())
@@ -63,8 +71,6 @@ func folderReader() string{
 
 }
 
-
-
 func main() {
 
 	var cliente int
@@ -103,6 +109,12 @@ func main() {
 	   }
 	   defer conn.Close()
 
+		 //REGISTRANDO SERVICIO POR PARTE DE CLIENTE
+		 streaming:= Uploads.NewGuploadServiceClient(conn)
+		 stream, err := streaming.Upload(context.Background())
+		 if err != nil {
+			 log.Fatalf("%v.Upload(_) = _, %v", streaming, err)
+		 }
 
 
 		/*ESCOGIENDO LIBRO*/
@@ -140,32 +152,32 @@ func main() {
 			file.Read(partBuffer)
 
 			// write to disk
-			fileName := fileName[0:(len(fileName)-4)] +"_part_" + strconv.FormatUint(i, 10) + ".pdf"
+			chunk:= Uploads.Chunk{
+	      Content: partBuffer,
+	      Name: fileName,
+	      Part: int32(i),
+	    }
+			/*fileName := fileName[0:(len(fileName)-4)] +"_part_" + strconv.FormatUint(i, 10) + ".pdf"
 			_, err := os.Create(fileName)
 
 			if err != nil {
 					fmt.Println(err)
 					os.Exit(1)
-			}
+			}*/
 			///STREAM DE CHUNKS
-			stream, err := client.RecordRoute(ctx)
-			if err != nil {
-				log.Fatalf("%v.RecordRoute(_) = _, %v", client, err)
-			}
-			for _, point := range points {
-				if err := stream.Send(point); err != nil {
-					log.Fatalf("%v.Send(%v) = %v", stream, point, err)
-				}
-			}
-			reply, err := stream.CloseAndRecv()
-			if err != nil {
-				log.Fatalf("%v.CloseAndRecv() got error %v, want %v", stream, err, nil)
+			if err := stream.Send(&chunk); err != nil {
+				log.Fatalf("%v.Send(%v) = %v", stream, chunk, err)
 			}
 			// write/save buffer to disk
 			//ioutil.WriteFile(fileName, partBuffer, os.ModeAppend)
-
+			fileName := fileName[0:(len(fileName)-4)] +"_part_" + strconv.FormatUint(i, 10) + ".pdf"
 			fmt.Println("Split to : ", fileName)
 		}
+		reply, err := stream.CloseAndRecv()
+		if err != nil {
+			log.Fatalf("%v.CloseAndRecv() got error %v, want %v", stream, err, nil)
+		}
+		fmt.Println(reply.Message)
 	}else{
 		fmt.Println("Soy downloader!")
 	}

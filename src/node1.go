@@ -29,7 +29,7 @@ func main() {
 		log.Fatalf("failed to serve: %s", err)
 	}
 
-	fmt.Println("NODO1 FUNCIONANDO")
+	fmt.Println(Uploads.save[0])
 	//SEGUIMIENTOS
 	//FIN SEGUIMIENTOS
 	//COMUNICACION CON CAMIONES

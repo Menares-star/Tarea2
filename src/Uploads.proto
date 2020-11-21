@@ -7,8 +7,8 @@ service GuploadService {
 
 message Chunk {
         bytes Content = 1;
-        string name = 2;
-        int32 part = 3;
+        string Name = 2;
+        int32 Part = 3;
 }
 
 message UploadStatus {

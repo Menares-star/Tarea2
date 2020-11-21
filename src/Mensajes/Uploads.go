@@ -4,29 +4,30 @@ import (
 	"log"
   //"golang.org/x/net/context"
 	"io"
-
+	"fmt"
 )
 
-type Server1 struct{
+var save [] Chunk
 
-	 x  map[int][]Chunk
+type Server1 struct{
 
 }
 
 func (s *Server1) Upload(stream GuploadService_UploadServer) error {
-	x := make(map[int][]Chunk)
+	//x := make(map[int][]Chunk)
 	for i:=0;;i++ {
 		str, err := stream.Recv()
-		log.Printf("Ha llegado el chunk",str.GetPart())
-		x[i] = append(x[i],*str)
 		if err == io.EOF {
 			return stream.SendAndClose(&UploadStatus{
-				Message:   "Su estado es OK",
+				Message:   "Su estado es CHUNKS ENVIADOS",
 			})
 		}
+		log.Printf("Ha llegado el chunk %d",str.GetPart())
+		save = append(save,*str)
+		fmt.Println(save[i].Part)
 		if err != nil {
 			return stream.SendAndClose(&UploadStatus{
-				Message:   "Su estado es ERROR",
+				Message:   "Su estado es CHUNKS NO ENVIADOS",
 			})
 		}
 	}
