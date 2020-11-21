@@ -20,12 +20,12 @@ func (s *Server1) Upload(stream GuploadService_UploadServer) error {
 		log.Printf("Ha llegado el chunk",str.GetPart())
 		x[i] = append(x[i],*str)
 		if err == io.EOF {
-			return SendAndClose(&UploadStatus{
+			return stream.SendAndClose(&UploadStatus{
 				Message:   "Su estado es OK",
 			})
 		}
 		if err != nil {
-			return SendAndClose(&UploadStatus{
+			return stream.SendAndClose(&UploadStatus{
 				Message:   "Su estado es ERROR",
 			})
 		}

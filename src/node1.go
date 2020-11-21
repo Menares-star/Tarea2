@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 	"net"
-	//"fmt"
+	"fmt"
 	"google.golang.org/grpc"
 	"github.com/Menares-star/Tarea2/src/Mensajes"
 )
@@ -24,10 +24,12 @@ func main() {
 	Uploads.RegisterGuploadServiceServer(grpcServer, &s)
 	//ordenes.RegisterSeguimientoServiceServer(grpcServer, &s)
 	//FIN REGISTRO DE SERVICIOS
-
+	fmt.Println("NODO1 FUNCIONANDO")
 	if err := grpcServer.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %s", err)
 	}
+
+	fmt.Println("NODO1 FUNCIONANDO")
 	//SEGUIMIENTOS
 	//FIN SEGUIMIENTOS
 	//COMUNICACION CON CAMIONES
