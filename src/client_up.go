@@ -83,7 +83,7 @@ func main() {
 	if cliente==1 {
 
 		servers:=make([]string,3)
-		servers[0]=":8000"
+		servers[0]=":8001"
 		servers[1]=":7000"
 		servers[2]=":6000"
 

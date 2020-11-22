@@ -5,7 +5,6 @@ import (
   //"golang.org/x/net/context"
 	"io"
 	"fmt"
-	"node1"
 )
 
 var save [] Chunk
@@ -24,9 +23,9 @@ func (s *Server1) Upload(stream GuploadService_UploadServer) error {
 		}
 		log.Printf("Ha llegado el chunk %d",str.GetPart())
 		save = append(save,*str)
-		node1.save1 = append(node1.save1,*str)
+		//node1.save1 = append(node1.save1,*str)
 		fmt.Println(save[i].Part)
-		fmt.Println(node1.save1[i].Part)
+		//fmt.Println("kaka")
 		if err != nil {
 			return stream.SendAndClose(&UploadStatus{
 				Message:   "Su estado es CHUNKS NO ENVIADOS",
