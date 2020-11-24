@@ -5,6 +5,9 @@ import (
   //"golang.org/x/net/context"
 	"io"
 	"fmt"
+	"io/ioutil"
+	"os"
+	"strconv"
 )
 
 var save [] Chunk
@@ -21,11 +24,21 @@ func (s *Server1) Upload(stream GuploadService_UploadServer) error {
 				Message:   "Su estado es CHUNKS ENVIADOS",
 			})
 		}
-		log.Printf("Ha llegado el chunk %d",str.GetPart())
+		//DECOMPOSING CHUNK
+		part := str.GetPart()
+		name := str.GetName()
+		content := str.GetContent()
+
 		save = append(save,*str)
 		//node1.save1 = append(node1.save1,*str)
 		fmt.Println(save[i].Part)
 		//fmt.Println("kaka")
+
+		//SAVE IN DISK
+		partName := name + "_part_" + strconv.Itoa(i) + ".pdf"
+		fmt.Println("chunk %d name: " + partName, part)
+		ioutil.WriteFile("chunks/" + partName, content, os.ModeAppend)
+
 		if err != nil {
 			return stream.SendAndClose(&UploadStatus{
 				Message:   "Su estado es CHUNKS NO ENVIADOS",
