@@ -1,7 +1,7 @@
 package Uploads
 
 import (
-	"log"
+	//"log"
   //"golang.org/x/net/context"
 	"io"
 	"fmt"
