@@ -18,13 +18,6 @@ import (
 	"github.com/Menares-star/Tarea2/src/Mensajes"
 )
 
-type Chunk struct{
-  Content []byte
-  Name string
-  Part int32
-}
-
-
 func random(min int, max int)int{
 	rand.Seed(time.Now().UnixNano())
 	return rand.Intn(max-min)+min

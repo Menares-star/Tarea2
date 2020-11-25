@@ -1,0 +1,23 @@
+syntax = "proto3";
+package Propose;
+
+service ProponerService {
+        rpc Proponer(Propuesta) returns (PropuestaFinal) {}
+}
+
+message Propuesta {
+        string vm1 = 1;
+        string vm2 = 2;
+        string vm3 = 3;
+}
+
+message InfoMaquina {
+    string puerto = 1;
+    int32 isAvailable = 2;
+}
+
+message PropuestaFinal {
+        InfoMaquina vm1 = 1;
+        InfoMaquina vm2 = 2;
+        InfoMaquina vm3 = 3;
+}

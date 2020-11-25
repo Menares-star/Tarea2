@@ -20,9 +20,7 @@ func (s *Server1) Upload(stream GuploadService_UploadServer) error {
 	for i:=0;;i++ {
 		str, err := stream.Recv()
 		if err == io.EOF {
-			return stream.SendAndClose(&UploadStatus{
-				Message:   "Su estado es CHUNKS ENVIADOS",
-			})
+			break
 		}
 		//DECOMPOSING CHUNK
 		part := str.GetPart()
@@ -35,9 +33,11 @@ func (s *Server1) Upload(stream GuploadService_UploadServer) error {
 		//fmt.Println("kaka")
 
 		//SAVE IN DISK
+		/*
 		partName := name + "_part_" + strconv.Itoa(i) + ".pdf"
-		fmt.Println("chunk %d name: " + partName, part)
+		fmt.Println("chunk " + strconv.Itoa(i) + " name: " + partName, part)
 		ioutil.WriteFile("chunks/" + partName, content, os.ModeAppend)
+		*/
 
 		if err != nil {
 			return stream.SendAndClose(&UploadStatus{
@@ -45,4 +45,26 @@ func (s *Server1) Upload(stream GuploadService_UploadServer) error {
 			})
 		}
 	}
+	var conn *grpc.ClientConn
+	conn, err := grpc.Dial(":9000",grpc.WithInsecure(),grpc.WithBlock())
+	if err != nil{
+		fmt.Println("Servidor :9000 no disponible: ", err)
+	}
+	defer conn.Close()
+
+	propose := Propose.Propuesta {
+		vm1 = ":8001"
+		vm2 = ":7000"
+		vm3 = ":6000"
+	}
+
+	prop := Propose.NewProponerServiceClient(conn)
+	propFinal, err := prop.Propose(context.Background(), &propose)
+
+	fmt.Println("pF: " + propFinal.vm2.puerto)
+
+	return stream.SendAndClose(&UploadStatus{
+		Message:   "Su estado es CHUNKS ENVIADOS",
+	})
+
 }
