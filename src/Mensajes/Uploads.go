@@ -2,12 +2,14 @@ package Uploads
 
 import (
 	//"log"
-  //"golang.org/x/net/context"
+  	"golang.org/x/net/context"
 	"io"
 	"fmt"
-	"io/ioutil"
-	"os"
-	"strconv"
+	"google.golang.org/grpc"
+	"github.com/Menares-star/Tarea2/src/Mensajes/Propuesta"
+	//"io/ioutil"
+	//"os"
+	//"strconv"
 )
 
 var save [] Chunk
@@ -23,9 +25,9 @@ func (s *Server1) Upload(stream GuploadService_UploadServer) error {
 			break
 		}
 		//DECOMPOSING CHUNK
-		part := str.GetPart()
-		name := str.GetName()
-		content := str.GetContent()
+		//part := str.GetPart()
+		//name := str.GetName()
+		//content := str.GetContent()
 
 		save = append(save,*str)
 		//node1.save1 = append(node1.save1,*str)
@@ -53,15 +55,15 @@ func (s *Server1) Upload(stream GuploadService_UploadServer) error {
 	defer conn.Close()
 
 	propose := Propose.Propuesta {
-		vm1 = ":8001"
-		vm2 = ":7000"
-		vm3 = ":6000"
+		Vm1: ":8001",
+		Vm2: ":7000",
+		Vm3: ":6000",
 	}
 
 	prop := Propose.NewProponerServiceClient(conn)
-	propFinal, err := prop.Propose(context.Background(), &propose)
+	propFinal, err := prop.Proponer(context.Background(), &propose)
 
-	fmt.Println("pF: " + propFinal.vm2.puerto)
+	fmt.Println("pF: " + propFinal.Vm2.Puerto)
 
 	return stream.SendAndClose(&UploadStatus{
 		Message:   "Su estado es CHUNKS ENVIADOS",
