@@ -24,7 +24,7 @@ func main() {
 	Propose.RegisterProponerServiceServer(grpcServer, &s)
 	//ordenes.RegisterSeguimientoServiceServer(grpcServer, &s)
 	//FIN REGISTRO DE SERVICIOS
-	fmt.Println("NODO1 FUNCIONANDO")
+	fmt.Println("nameNode FUNCIONANDO")
 	if err := grpcServer.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %s", err)
 	}

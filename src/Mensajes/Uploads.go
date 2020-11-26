@@ -9,7 +9,7 @@ import (
 	"github.com/Menares-star/Tarea2/src/Mensajes/Propuesta"
 	//"io/ioutil"
 	//"os"
-	//"strconv"
+	"strconv"
 )
 
 var save [] Chunk
@@ -63,7 +63,9 @@ func (s *Server1) Upload(stream GuploadService_UploadServer) error {
 	prop := Propose.NewProponerServiceClient(conn)
 	propFinal, err := prop.Proponer(context.Background(), &propose)
 
-	fmt.Println("pF: " + propFinal.Vm2.Puerto)
+	fmt.Println("R: vm1(" + propFinal.Vm1.Puerto + "), status: " + strconv.FormatInt(propFinal.Vm1.IsAvailable, 10))
+	fmt.Println("R: vm2(" + propFinal.Vm2.Puerto + "), status: " + strconv.FormatInt(propFinal.Vm2.IsAvailable, 10))
+	fmt.Println("R: vm3(" + propFinal.Vm3.Puerto + "), status: " + strconv.FormatInt(propFinal.Vm3.IsAvailable, 10))
 
 	return stream.SendAndClose(&UploadStatus{
 		Message:   "Su estado es CHUNKS ENVIADOS",

@@ -13,7 +13,7 @@ message Propuesta {
 
 message InfoMaquina {
     string Puerto = 1;
-    int32 IsAvailable = 2;
+    int64 IsAvailable = 2;
 }
 
 message PropuestaFinal {
