@@ -87,10 +87,10 @@ func main() {
 		conn, err := grpc.Dial(servers[0],grpc.WithInsecure(),grpc.WithBlock(),grpc.WithTimeout(t))
 		if err != nil{
 			fmt.Println("Servidor "+servers[0]+" no disponible: ",err)
-			conn, err := grpc.Dial(servers[1],grpc.WithInsecure(),grpc.WithBlock(),grpc.WithTimeout(t))
+			conn, err = grpc.Dial(servers[1],grpc.WithInsecure(),grpc.WithBlock(),grpc.WithTimeout(t))
 			if err != nil{
 				fmt.Println("Servidor "+servers[1]+" no disponible: ",err)
-				conn, err := grpc.Dial(servers[2],grpc.WithInsecure(),grpc.WithBlock(),grpc.WithTimeout(t))
+				conn, err = grpc.Dial(servers[2],grpc.WithInsecure(),grpc.WithBlock(),grpc.WithTimeout(t))
 				if err != nil{
 					fmt.Println("Servidor "+servers[2]+" no disponible: ",err)
 					fmt.Println("TODOS LOS SERVIDORES ESTÁN CAIDOS")

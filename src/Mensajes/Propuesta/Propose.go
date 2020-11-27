@@ -3,10 +3,11 @@ package Propose
 import (
 	//	"log"
 	"golang.org/x/net/context"
-	//"time"
-	//"google.golang.org/grpc"
+	"time"
+	"google.golang.org/grpc"
+	//"google.golang.org/grpc/connectivity"
 	//"io"
-	//"fmt"
+	"fmt"
 	//"io/ioutil"
 	//"os"
 	//"strconv"
@@ -16,52 +17,75 @@ type Server struct{
 }
 
 func (s *Server) Proponer(ctx context.Context, prop *Propuesta) (*PropuestaFinal, error) {
-	
+
+	fmt.Println("Verificando Propuesta")
+
+
+	servers:=make([]string,3)
+	servers[0]=":8001"
+	servers[1]=":7000"
+	servers[2]=":6000"
+
+	var available1 = 1
+	var available2 = 1
+	var available3 = 1
+
+	var t time.Duration = 2500000000
+	/* CONEXION*/
+	//conn, err := grpc.Dial(":8000", grpc.WithInsecure(), grpc.WithBlock())
+	var conn1 *grpc.ClientConn
+	conn1, err1 := grpc.Dial(servers[0],grpc.WithInsecure(),grpc.WithBlock(),grpc.WithTimeout(t))
+	fmt.Println(conn1.GetState())
+	defer conn1.Close()
+	if err1 != nil{
+		fmt.Println("Servidor "+servers[0]+" no disponible: ",err1)
+		available1=0
+			}else{
+				fmt.Println("Servidor "+servers[0]+" disponible: ")
+			}
+
+	var conn2 *grpc.ClientConn
+	conn2, err2 := grpc.Dial(servers[1],grpc.WithInsecure(),grpc.WithBlock(),grpc.WithTimeout(t))
+	fmt.Println(conn2.GetState())
+	defer conn2.Close()
+	if err2 != nil{
+		fmt.Println("Servidor "+servers[1]+" no disponible: ",err2)
+		available2=0
+			}else{
+				fmt.Println("Servidor "+servers[1]+" disponible: ")
+			}
+
+	var conn3 *grpc.ClientConn
+	conn3, err3 := grpc.Dial(servers[2],grpc.WithInsecure(),grpc.WithBlock(),grpc.WithTimeout(t))
+	fmt.Println(conn3.GetState())
+	defer conn3.Close()
+	if err3 != nil{
+		fmt.Println("Servidor "+servers[2]+" no disponible: ",err3)
+		available3=0
+			}else{
+				fmt.Println("Servidor "+servers[2]+" disponible: ")
+			}
+	//defer conn3.Close()
+
+
 	mv1 := InfoMaquina {
 		Puerto: ":8001",
-		IsAvailable: int64(1),
+		IsAvailable: int64(available1),
 	}
 	mv2 := InfoMaquina {
 		Puerto: ":7000",
-		IsAvailable: int64(1),
+		IsAvailable: int64(available2),
 	}
 	mv3 := InfoMaquina {
 		Puerto: ":6000",
-		IsAvailable: int64(1),
+		IsAvailable: int64(available3),
 	}
-	
-	/*
-	var conn *grpc.ClientConn
-	var t time.Duration = 5000000000
 
-	conn, err := grpc.Dial(":8001",grpc.WithInsecure(),grpc.WithBlock(),grpc.WithTimeout(t))
-	if err != nil{
-		fmt.Println("Servidor :8001 no disponible ",err)
-		mv1.IsAvailable = int64(0)
-	}
-	defer conn.Close()
-
-	
-	conn, err = grpc.Dial(":7000",grpc.WithInsecure(),grpc.WithBlock(),grpc.WithTimeout(t))
-	if err != nil{
-		fmt.Println("Servidor :7000 no disponible",err)
-		mv2.IsAvailable = int64(0)
-	}
-	defer conn.Close()
-
-	conn, err = grpc.Dial(":6000",grpc.WithInsecure(),grpc.WithBlock(),grpc.WithTimeout(t))
-	if err != nil{
-		fmt.Println("Servidor :6000 no disponible ",err)
-		mv1.IsAvailable = int64(0)
-	}
-	defer conn.Close()
-
-	*/
 	propose := PropuestaFinal {
 		Vm1: &mv1,
 		Vm2: &mv2,
 		Vm3: &mv3,
 	}
-
+	fmt.Println("AQUI")
 	return &propose, nil
 }
