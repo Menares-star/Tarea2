@@ -9,6 +9,7 @@ message Chunk {
         bytes Content = 1;
         string Name = 2;
         int32 Part = 3;
+        string Puerto =4;
 }
 
 message UploadStatus {

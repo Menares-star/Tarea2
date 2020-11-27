@@ -9,8 +9,12 @@ import (
 	"github.com/Menares-star/Tarea2/src/Mensajes/Propuesta"
 	//"io/ioutil"
 	//"os"
-	"strconv"
+	//"strconv"
 )
+
+var memory1 int64 = 250000
+var memory2 int64 = 125000
+var memory3 int64 = 75000
 
 var save [] Chunk
 
@@ -54,18 +58,35 @@ func (s *Server1) Upload(stream GuploadService_UploadServer) error {
 	}
 	defer conn.Close()
 
-	propose := Propose.Propuesta {
+  propose := Propose.Propuesta {
 		Vm1: ":8001",
 		Vm2: ":7000",
 		Vm3: ":6000",
 	}
+  var mem int64 = 0
+  if save[0].Puerto==":8001"{
+    mem=memory1
+  }
+  if save[0].Puerto==":7000"{
+    mem=memory2
+  }
+  if save[0].Puerto==":6000"{
+    mem=memory3
+  }
+
+
+  Info := Propose.InfoMaquina {
+		Puerto: save[0].Puerto,
+		Memory: mem,
+		Propuesta: &propose,
+	}
 
 	prop := Propose.NewProponerServiceClient(conn)
-	propFinal, err := prop.Proponer(context.Background(), &propose)
+	propFinal, err := prop.Proponer(context.Background(), &Info)
 
-	fmt.Println("R: vm1(" + propFinal.Vm1.Puerto + "), status: " + strconv.FormatInt(propFinal.Vm1.IsAvailable, 10))
-	fmt.Println("R: vm2(" + propFinal.Vm2.Puerto + "), status: " + strconv.FormatInt(propFinal.Vm2.IsAvailable, 10))
-	fmt.Println("R: vm3(" + propFinal.Vm3.Puerto + "), status: " + strconv.FormatInt(propFinal.Vm3.IsAvailable, 10))
+	fmt.Println("R: vm1(" + propFinal.Vm1 + ")")
+	fmt.Println("R: vm2(" + propFinal.Vm2 + ")")
+	fmt.Println("R: vm3(" + propFinal.Vm3 + ")")
 
 	return stream.SendAndClose(&UploadStatus{
 		Message:   "Su estado es CHUNKS ENVIADOS",

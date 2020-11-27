@@ -81,13 +81,14 @@ func main() {
 		servers[2]=":6000"
 
 		var t time.Duration = 5000000000
+		var p string = servers[0]
 		/* CONEXION*/
 		//conn, err := grpc.Dial(":8000", grpc.WithInsecure(), grpc.WithBlock())
 		var conn *grpc.ClientConn
 		conn, err := grpc.Dial(servers[0],grpc.WithInsecure(),grpc.WithBlock(),grpc.WithTimeout(t))
 		if err != nil{
 			fmt.Println("Servidor "+servers[0]+" no disponible: ",err)
-			conn, err = grpc.Dial(servers[1],grpc.WithInsecure(),grpc.WithBlock(),grpc.WithTimeout(t))
+			conn, err= grpc.Dial(servers[1],grpc.WithInsecure(),grpc.WithBlock(),grpc.WithTimeout(t))
 			if err != nil{
 				fmt.Println("Servidor "+servers[1]+" no disponible: ",err)
 				conn, err = grpc.Dial(servers[2],grpc.WithInsecure(),grpc.WithBlock(),grpc.WithTimeout(t))
@@ -95,10 +96,14 @@ func main() {
 					fmt.Println("Servidor "+servers[2]+" no disponible: ",err)
 					fmt.Println("TODOS LOS SERVIDORES ESTÁN CAIDOS")
 					os.Exit(1)
+				}else{
+					p = servers[2]
+					defer conn.Close()
 				}
+			}else{
+				p=servers[1]
 				defer conn.Close()
 			}
-			defer conn.Close()
 		}
 		defer conn.Close()
 
@@ -149,6 +154,7 @@ func main() {
 				Content: partBuffer,
 				Name: fileName[0:(len(fileName)-4)],
 				Part: int32(i),
+				Puerto: p,
 	    	}
 			/*fileName := fileName[0:(len(fileName)-4)] +"_part_" + strconv.FormatUint(i, 10) + ".pdf"
 			_, err := os.Create(fileName)
