@@ -35,8 +35,6 @@ func (s *Server) Proponer(ctx context.Context, prop *Propuesta) (*PropuestaFinal
 	//conn, err := grpc.Dial(":8000", grpc.WithInsecure(), grpc.WithBlock())
 	var conn1 *grpc.ClientConn
 	conn1, err1 := grpc.Dial(servers[0],grpc.WithInsecure(),grpc.WithBlock(),grpc.WithTimeout(t))
-	fmt.Println(conn1.GetState())
-	defer conn1.Close()
 	if err1 != nil{
 		fmt.Println("Servidor "+servers[0]+" no disponible: ",err1)
 		available1=0
@@ -46,8 +44,6 @@ func (s *Server) Proponer(ctx context.Context, prop *Propuesta) (*PropuestaFinal
 
 	var conn2 *grpc.ClientConn
 	conn2, err2 := grpc.Dial(servers[1],grpc.WithInsecure(),grpc.WithBlock(),grpc.WithTimeout(t))
-	fmt.Println(conn2.GetState())
-	defer conn2.Close()
 	if err2 != nil{
 		fmt.Println("Servidor "+servers[1]+" no disponible: ",err2)
 		available2=0
@@ -57,17 +53,16 @@ func (s *Server) Proponer(ctx context.Context, prop *Propuesta) (*PropuestaFinal
 
 	var conn3 *grpc.ClientConn
 	conn3, err3 := grpc.Dial(servers[2],grpc.WithInsecure(),grpc.WithBlock(),grpc.WithTimeout(t))
-	fmt.Println(conn3.GetState())
-	defer conn3.Close()
 	if err3 != nil{
 		fmt.Println("Servidor "+servers[2]+" no disponible: ",err3)
 		available3=0
 			}else{
 				fmt.Println("Servidor "+servers[2]+" disponible: ")
 			}
-	//defer conn3.Close()
-
-
+	fmt.Println(conn1,conn2,conn3)
+	/*defer conn1.Close()
+	defer conn2.Close()
+	defer conn3.Close()*/
 	mv1 := InfoMaquina {
 		Puerto: ":8001",
 		IsAvailable: int64(available1),
