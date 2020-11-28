@@ -66,10 +66,10 @@ func (s *Server1) Upload(stream GuploadService_UploadServer) error {
 	}
 
 	Info := Propose.InfoMaquina {
-  	Puerto: save[0].Puerto,
+  	Puerto: save[len(save)-1].Puerto,
   	Propuesta: &propose,
   	Nchunks: int64(cont),
-    Name: save[0].Name,
+    Name: save[len(save)-1].Name,
 	}
 
 	prop := Propose.NewProponerServiceClient(conn)

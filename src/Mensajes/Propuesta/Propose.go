@@ -77,9 +77,9 @@ func (s *Server) Proponer(ctx context.Context, prop *InfoMaquina) (*Propuesta, e
 				}
 	}
 
-	var c1 int =-1
-	var c2 int =-1
-	var c3 int =-1
+	var c1 int =0
+	var c2 int =0
+	var c3 int =0
 
 	var nc int = int(prop.Nchunks)
 
@@ -136,8 +136,16 @@ func (s *Server) Proponer(ctx context.Context, prop *InfoMaquina) (*Propuesta, e
   if err != nil {
   panic(err)
 	}
-  for i:=0;i<nc;i++{
-	 fi.WriteString(prop.Name+" "+ strconv.Itoa(nc)+"\n")
+	fi.WriteString(prop.Name+" "+ strconv.Itoa(nc)+"\n")
+	var i int = 0
+  for ;i<c1;i++{
+	 fi.WriteString(prop.Name+"_parte_"+ strconv.Itoa(i)+" "+servers[0]+"\n")
+  }
+	for ;i<(c1+c2);i++{
+	 fi.WriteString(prop.Name+"_parte_"+ strconv.Itoa(i)+" "+servers[1]+"\n")
+  }
+	for ;i<(c1+c2+c3);i++{
+	 fi.WriteString(prop.Name+"_parte_"+ strconv.Itoa(i)+" "+servers[2]+"\n")
   }
   fi.Close()
 
@@ -145,9 +153,9 @@ func (s *Server) Proponer(ctx context.Context, prop *InfoMaquina) (*Propuesta, e
 	Vm1: available1,
 	Vm2: available2,
 	Vm3: available3,
-	Lim1: int64(c1),
-	Lim2: int64(c2),
-	Lim3: int64(c3),
+	Cant1: int64(c1),
+	Cant2: int64(c2),
+	Cant3: int64(c3),
 	}
 	fmt.Println(propose)
 	return &propose, nil

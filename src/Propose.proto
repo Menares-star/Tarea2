@@ -9,9 +9,9 @@ message Propuesta {
     string Vm1 = 1;
     string Vm2 = 2;
     string Vm3 = 3;
-    int64 lim1 = 4;
-    int64 lim2 = 5;
-    int64 lim3 =6;
+    int64 Cant1 = 4;
+    int64 Cant2 = 5;
+    int64 Cant3 =6;
 }
 
 message InfoMaquina {
