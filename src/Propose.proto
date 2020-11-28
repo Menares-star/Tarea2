@@ -9,10 +9,14 @@ message Propuesta {
     string Vm1 = 1;
     string Vm2 = 2;
     string Vm3 = 3;
+    int64 lim1 = 4;
+    int64 lim2 = 5;
+    int64 lim3 =6;
 }
 
 message InfoMaquina {
     string Puerto = 1;
     int64 Memory = 2;
     Propuesta Propuesta = 3;
+    int64 nChunks = 4;
 }

@@ -12,9 +12,9 @@ import (
 	//"strconv"
 )
 
-var memory1 int64 = 250000
-var memory2 int64 = 125000
-var memory3 int64 = 75000
+var memory1 int64 = 200
+var memory2 int64 = 100
+var memory3 int64 = 60
 
 var save [] Chunk
 
@@ -23,11 +23,13 @@ type Server1 struct{
 
 func (s *Server1) Upload(stream GuploadService_UploadServer) error {
 	//x := make(map[int][]Chunk)
+	cont := 0
 	for i:=0;;i++ {
 		str, err := stream.Recv()
 		if err == io.EOF {
 			break
 		}
+		cont = cont + 1
 		//DECOMPOSING CHUNK
 		//part := str.GetPart()
 		//name := str.GetName()
@@ -51,6 +53,9 @@ func (s *Server1) Upload(stream GuploadService_UploadServer) error {
 			})
 		}
 	}
+
+	fmt.Println(i)
+
 	var conn *grpc.ClientConn
 	conn, err := grpc.Dial(":9000",grpc.WithInsecure(),grpc.WithBlock())
 	if err != nil{
@@ -58,27 +63,28 @@ func (s *Server1) Upload(stream GuploadService_UploadServer) error {
 	}
 	defer conn.Close()
 
-  propose := Propose.Propuesta {
+	propose := Propose.Propuesta {
 		Vm1: ":8001",
 		Vm2: ":7000",
 		Vm3: ":6000",
 	}
-  var mem int64 = 0
-  if save[0].Puerto==":8001"{
-    mem=memory1
-  }
-  if save[0].Puerto==":7000"{
-    mem=memory2
-  }
-  if save[0].Puerto==":6000"{
-    mem=memory3
-  }
+  	var mem int64 = 0
+	if save[0].Puerto==":8001"{
+		mem=memory1
+	}
+	if save[0].Puerto==":7000"{
+		mem=memory2
+	}
+	if save[0].Puerto==":6000"{
+		mem=memory3
+	}
 
 
-  Info := Propose.InfoMaquina {
+  	Info := Propose.InfoMaquina {
 		Puerto: save[0].Puerto,
 		Memory: mem,
 		Propuesta: &propose,
+		NChunks: int64(cont),
 	}
 
 	prop := Propose.NewProponerServiceClient(conn)

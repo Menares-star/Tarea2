@@ -77,6 +77,9 @@ func (s *Server) Proponer(ctx context.Context, prop *InfoMaquina) (*Propuesta, e
 	Vm1: available1,
 	Vm2: available2,
 	Vm3: available3,
+	Lim1: 1,
+	Lim2: 1,
+	Lim3: 1,
 	}
 	fmt.Println("AQUI")
 	return &propose, nil
