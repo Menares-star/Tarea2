@@ -12,10 +12,6 @@ import (
 	//"strconv"
 )
 
-var memory1 int64 = 200
-var memory2 int64 = 100
-var memory3 int64 = 60
-
 var save [] Chunk
 
 type Server1 struct{
@@ -54,7 +50,7 @@ func (s *Server1) Upload(stream GuploadService_UploadServer) error {
 		}
 	}
 
-	fmt.Println(i)
+	fmt.Println(cont)
 
 	var conn *grpc.ClientConn
 	conn, err := grpc.Dial(":9000",grpc.WithInsecure(),grpc.WithBlock())
@@ -68,23 +64,12 @@ func (s *Server1) Upload(stream GuploadService_UploadServer) error {
 		Vm2: ":7000",
 		Vm3: ":6000",
 	}
-  	var mem int64 = 0
-	if save[0].Puerto==":8001"{
-		mem=memory1
-	}
-	if save[0].Puerto==":7000"{
-		mem=memory2
-	}
-	if save[0].Puerto==":6000"{
-		mem=memory3
-	}
 
-
-  	Info := Propose.InfoMaquina {
-		Puerto: save[0].Puerto,
-		Memory: mem,
-		Propuesta: &propose,
-		NChunks: int64(cont),
+	Info := Propose.InfoMaquina {
+  	Puerto: save[0].Puerto,
+  	Propuesta: &propose,
+  	Nchunks: int64(cont),
+    Name: save[0].Name,
 	}
 
 	prop := Propose.NewProponerServiceClient(conn)

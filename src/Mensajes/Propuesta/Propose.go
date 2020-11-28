@@ -9,8 +9,9 @@ import (
 	//"io"
 	"fmt"
 	//"io/ioutil"
-	//"os"
-	//"strconv"
+	"os"
+	//"bufio"
+	"strconv"
 )
 
 type Server struct{
@@ -29,6 +30,7 @@ func (s *Server) Proponer(ctx context.Context, prop *InfoMaquina) (*Propuesta, e
 	servers[1]=":7000"
 	servers[2]=":6000"
 
+	var cont int = 1
 	var available1 string = servers[0]
 	var available2 string = servers[1]
 	var available3 string = servers[2]
@@ -42,6 +44,7 @@ func (s *Server) Proponer(ctx context.Context, prop *InfoMaquina) (*Propuesta, e
 			available1="No disponible"
 				}else{
 					fmt.Println("Servidor "+servers[0]+" disponible: ")
+					cont = cont +1
 					defer conn1.Close()
 				}
 	}
@@ -55,6 +58,7 @@ func (s *Server) Proponer(ctx context.Context, prop *InfoMaquina) (*Propuesta, e
 			available2="No disponible"
 				}else{
 					fmt.Println("Servidor "+servers[1]+" disponible: ")
+					cont = cont+1
 					defer conn2.Close()
 				}
 	}
@@ -68,19 +72,83 @@ func (s *Server) Proponer(ctx context.Context, prop *InfoMaquina) (*Propuesta, e
 			available3="No disponible"
 				}else{
 					fmt.Println("Servidor "+servers[2]+" disponible: ")
+					cont = cont + 1
 					defer conn3.Close()
 				}
 	}
 
+	var c1 int =-1
+	var c2 int =-1
+	var c3 int =-1
+
+	var nc int = int(prop.Nchunks)
+
+	if nc<cont{
+		if servers[0]==prop.Puerto{
+			c1=nc
+		}
+		if servers[1]==prop.Puerto{
+			c2=nc
+		}
+		if servers[2]==prop.Puerto{
+			c3=nc
+		}
+	}
+
+	fmt.Println(float64(float64(nc)/float64(cont)))
+
+	if nc>=cont{
+		if (nc%cont)==0{
+			if available1==servers[0]{
+				c1=(nc/cont)
+			}
+			if available2==servers[1]{
+				c2=(nc/cont)
+			}
+			if available3==servers[2]{
+				c3=(nc/cont)
+			}
+
+		}else{
+			if available1==servers[0]{
+				c1=(nc/cont)
+				if servers[0]==prop.Puerto{
+					c1=c1 + (nc%cont)
+				}
+			}
+			if available2==servers[1]{
+				c2=(nc/cont)
+				if servers[1]==prop.Puerto{
+					c2=c2 + (nc%cont)
+				}
+			}
+			if available3==servers[2]{
+				c3=(nc/cont)
+				if servers[2]==prop.Puerto{
+					c3=c3 + (nc%cont)
+				}
+			}
+		}
+	}
+
+	// open input file
+  fi, err := os.OpenFile("log.txt", os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
+  if err != nil {
+  panic(err)
+	}
+  for i:=0;i<nc;i++{
+	 fi.WriteString(prop.Name+" "+ strconv.Itoa(nc)+"\n")
+  }
+  fi.Close()
 
 	propose := Propuesta{
 	Vm1: available1,
 	Vm2: available2,
 	Vm3: available3,
-	Lim1: 1,
-	Lim2: 1,
-	Lim3: 1,
+	Lim1: int64(c1),
+	Lim2: int64(c2),
+	Lim3: int64(c3),
 	}
-	fmt.Println("AQUI")
+	fmt.Println(propose)
 	return &propose, nil
 }

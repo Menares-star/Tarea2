@@ -16,7 +16,7 @@ message Propuesta {
 
 message InfoMaquina {
     string Puerto = 1;
-    int64 Memory = 2;
-    Propuesta Propuesta = 3;
-    int64 nChunks = 4;
+    Propuesta Propuesta = 2;
+    int64 Nchunks = 3;
+    string Name = 4;
 }
