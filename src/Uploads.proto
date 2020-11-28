@@ -5,6 +5,10 @@ service GuploadService {
         rpc Upload(stream Chunk) returns (UploadStatus) {}
 }
 
+service RepartirService {
+        rpc Repartir(stream Chunk) returns (UploadStatus) {}
+}
+
 message Chunk {
         bytes Content = 1;
         string Name = 2;

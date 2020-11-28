@@ -134,7 +134,7 @@ func (s *Server) Proponer(ctx context.Context, prop *InfoMaquina) (*Propuesta, e
 	// open input file
   fi, err := os.OpenFile("log.txt", os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
   if err != nil {
-  panic(err)
+  	panic(err)
 	}
 	fi.WriteString(prop.Name+" "+ strconv.Itoa(nc)+"\n")
 	var i int = 0

@@ -5,7 +5,7 @@ import (
 	"net"
 	"fmt"
 	"google.golang.org/grpc"
-	"github.com/Menares-star/Tarea2/src/Mensajes"
+	"github.com/Menares-star/Tarea2/src/Mensajes/Upload"
 
 )
 
@@ -22,6 +22,7 @@ func main() {
 
 	//REGISTRO DE SERVICIOS
 	Uploads.RegisterGuploadServiceServer(grpcServer, &s)
+	Uploads.RegisterRepartirServiceServer(grpcServer, &s)
 	//ordenes.RegisterSeguimientoServiceServer(grpcServer, &s)
 	//FIN REGISTRO DE SERVICIOS
 	fmt.Println("NODO3 FUNCIONANDO")
