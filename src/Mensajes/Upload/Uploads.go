@@ -27,22 +27,11 @@ func (s *Server1) Upload(stream GuploadService_UploadServer) error {
 			break
 		}
 		cont = cont + 1
-		//DECOMPOSING CHUNK
-		//part := str.GetPart()
-		//name := str.GetName()
-		//content := str.GetContent()
+
 
 		save = append(save,*str)
-		//node1.save1 = append(node1.save1,*str)
+		
 		fmt.Println(save[i].Part)
-		//fmt.Println("kaka")
-
-		//SAVE IN DISK
-		/*
-		partName := name + "_part_" + strconv.Itoa(i) + ".pdf"
-		fmt.Println("chunk " + strconv.Itoa(i) + " name: " + partName, part)
-		ioutil.WriteFile("chunks/" + partName, content, os.ModeAppend)
-		*/
 
 		if err != nil {
 			return stream.SendAndClose(&UploadStatus{
@@ -54,9 +43,9 @@ func (s *Server1) Upload(stream GuploadService_UploadServer) error {
 	fmt.Println(cont)
 
 	var conn *grpc.ClientConn
-	conn, err := grpc.Dial(":9001",grpc.WithInsecure(),grpc.WithBlock())
+	conn, err := grpc.Dial(":9002",grpc.WithInsecure(),grpc.WithBlock())
 	if err != nil{
-		fmt.Println("Servidor :9001 no disponible: ", err)
+		fmt.Println("Servidor :9002 no disponible: ", err)
 	}
 	defer conn.Close()
 
@@ -107,7 +96,7 @@ func (s *Server1) Upload(stream GuploadService_UploadServer) error {
       }
       defer conn1.Close()
       streaming:= NewRepartirServiceClient(conn1)
-  		stream, err := streaming.Repartir(context.Background())
+  		streaml, err := streaming.Repartir(context.Background())
       if err != nil {
   			log.Fatalf("%v.Repartir(_) = _, %v", streaming, err)
   		}
@@ -119,15 +108,15 @@ func (s *Server1) Upload(stream GuploadService_UploadServer) error {
   				Part: save[i].Part,
   				Puerto: save[i].Puerto,
   	    	}
-        if err := stream.Send(&chunk); err != nil {
-  				log.Fatalf("%v.Send(%v) = %v", stream, chunk, err)
+        if err := streaml.Send(&chunk); err != nil {
+  				log.Fatalf("%v.Send(%v) = %v", streaml, chunk, err)
   			}
       }
-      /*reply, err := stream.CloseAndRecv()
+      reply, err := streaml.CloseAndRecv()
   		if err != nil {
-  			log.Fatalf("%v.CloseAndRecv() got error %v, want %v", stream, err, nil)
+  			log.Fatalf("%v.CloseAndRecv() got error %v, want %v", streaml, err, nil)
   		}
-  		fmt.Println(reply.Message)*/
+  		fmt.Println(reply.Message)
     }
   }
 
@@ -150,8 +139,9 @@ func (s *Server1) Upload(stream GuploadService_UploadServer) error {
       if err2 != nil{
         fmt.Println("Servidor :7000 no disponible: ", err2)
       }
+      defer conn2.Close()
       streaming:=NewRepartirServiceClient(conn2)
-  		stream, err := streaming.Repartir(context.Background())
+  		streaml, err := streaming.Repartir(context.Background())
       if err != nil {
   			log.Fatalf("%v.Repartir(_) = _, %v", streaming, err)
   		}
@@ -165,16 +155,16 @@ func (s *Server1) Upload(stream GuploadService_UploadServer) error {
           Part: save[i].Part,
           Puerto: save[i].Puerto,
           }
-        if err := stream.Send(&chunk); err != nil {
-  				log.Fatalf("%v.Send(%v) = %v", stream, chunk, err)
+        if err := streaml.Send(&chunk); err != nil {
+  				log.Fatalf("%v.Send(%v) = %v", streaml, chunk, err)
   			}
       }
-      r, err4 := stream.CloseAndRecv()
+      reply, err4 := streaml.CloseAndRecv()
   		if err4 != nil {
-  			log.Fatalf("%v.CloseAndRecv() got error %v, want %v", stream, err4, nil)
+  			log.Fatalf("%v.CloseAndRecv() got error %v, want %v", streaml, err4, nil)
   		}
-  		fmt.Println(r.Message)
-      defer conn2.Close()
+  		fmt.Println(reply.Message)
+
     }
   }
 
@@ -199,7 +189,7 @@ func (s *Server1) Upload(stream GuploadService_UploadServer) error {
       }
       defer conn3.Close()
       streaming:= NewRepartirServiceClient(conn3)
-  		stream, err := streaming.Repartir(context.Background())
+  		streaml, err := streaming.Repartir(context.Background())
       if err != nil {
   			log.Fatalf("%v.Repartir(_) = _, %v", streaming, err)
   		}
@@ -211,15 +201,15 @@ func (s *Server1) Upload(stream GuploadService_UploadServer) error {
           Part: save[i].Part,
           Puerto: save[i].Puerto,
           }
-        if err := stream.Send(&chunk); err != nil {
-  				log.Fatalf("%v.Send(%v) = %v", stream, chunk, err)
+        if err := streaml.Send(&chunk); err != nil {
+  				log.Fatalf("%v.Send(%v) = %v", streaml, chunk, err)
   			}
       }
-      /*reply, err := stream.CloseAndRecv()
+      reply, err := streaml.CloseAndRecv()
   		if err != nil {
-  			log.Fatalf("%v.CloseAndRecv() got error %v, want %v", stream, err, nil)
+  			log.Fatalf("%v.CloseAndRecv() got error %v, want %v", streaml, err, nil)
   		}
-  		fmt.Println(reply.Message)*/
+  		fmt.Println(reply.Message)
 
     }
   }
@@ -230,18 +220,19 @@ func (s *Server1) Upload(stream GuploadService_UploadServer) error {
 
 }
 
-func (s *Server1) Repartir(stream RepartirService_RepartirServer) error {
+func (s *Server1) Repartir(stream1 RepartirService_RepartirServer) error {
   fmt.Println("ESTOY EN REPARTIR NODO 2")
 	for i:=0;;i++ {
-		str, err := stream.Recv()
-    fmt.Println(str.Part)
+		str, err := stream1.Recv()
 		if err == io.EOF {
+      fmt.Println("EOF")
 			break
 		}
     if err != nil {
-			return stream.SendAndClose(&UploadStatus{
-				Message: "CHUNKS NO ALMACENADOS",
-			})
+      msg:=UploadStatus{
+    		Message: "CHUNKS NO ALMACENADOS",
+    	}
+			return stream1.SendAndClose(&msg)
 		}
 
     if str.Puerto==":8001"{
@@ -284,5 +275,5 @@ func (s *Server1) Repartir(stream RepartirService_RepartirServer) error {
 		Message: "CHUNKS ALMACENADOS",
 	}
   fmt.Println("AQUI al Final de repartir")
-  return stream.SendAndClose(&msg)
+  return stream1.SendAndClose(&msg)
 }
