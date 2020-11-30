@@ -5,7 +5,7 @@ import (
 	"net"
 	"fmt"
 	"google.golang.org/grpc"
-	"github.com/Menares-star/Tarea2/src/Mensajes/Notification"
+	"github.com/Menares-star/Tarea2/src/Distributed/Mensajes/Notification"
 
 )
 
