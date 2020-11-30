@@ -9,6 +9,9 @@ service RepartirService {
         rpc Repartir(stream Chunk) returns (UploadStatus) {}
 }
 
+service DownloadService{
+        rpc Download(stream InfoChunk) returns (stream Content){}
+}
 message Chunk {
         bytes Content = 1;
         string Name = 2;
@@ -18,4 +21,14 @@ message Chunk {
 
 message UploadStatus {
         string Message = 1;
+}
+
+message InfoChunk{
+        string Port =1;
+        string Namepart =2;
+}
+
+message Content{
+        bytes Content=1;
+        string Nametrozo=2;
 }

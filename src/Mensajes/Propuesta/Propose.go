@@ -1,7 +1,6 @@
 package Propose
 
 import (
-	//	"log"
 	"golang.org/x/net/context"
 	"time"
 	"google.golang.org/grpc"
@@ -9,8 +8,10 @@ import (
 	//"io"
 	"fmt"
 	//"io/ioutil"
+	"log"
+  "strings"
+	"bufio"
 	"os"
-	//"bufio"
 	"strconv"
 )
 
@@ -159,4 +160,80 @@ func (s *Server) Proponer(ctx context.Context, prop *InfoMaquina) (*Propuesta, e
 	}
 	fmt.Println(propose)
 	return &propose, nil
+}
+
+
+func (s *Server) Listar(recept *ReceptStatus, stream ListarService_ListarServer) error {
+	fmt.Println(recept)
+	var save[] string
+  file, err := os.Open( "log.txt")
+  if err != nil {
+    log.Fatal(err)
+  }
+  defer file.Close()
+  scanner := bufio.NewScanner(file)
+  for scanner.Scan() {
+    librop:= strings.Split(scanner.Text(),"_parte")
+    libro:= strings.Split(librop[0]," ")
+    //fmt.Println(libro[0])
+    var flag bool = false
+    for i:=0;flag==false && i<len(save);i++ {
+      if save[i]==libro[0]{
+        flag=true
+        break
+      }
+    }
+    if flag==false{
+      save = append(save,libro[0])
+      fmt.Println(libro[0])
+			book:= Libro{
+				Name: libro[0],
+			}
+			if err := stream.Send(&book); err != nil {
+				return err
+			}
+    }
+  }
+ return nil
+}
+
+func (s *Server) ListarChunks(book *Libro, stream ListarChunksService_ListarChunksServer) error {
+	fmt.Println(book.Name)
+	//var save[] string
+  file, err := os.Open( "log.txt")
+  if err != nil {
+    log.Fatal(err)
+  }
+  defer file.Close()
+	var i int=-1
+	var Npartes int =-1
+  scanner := bufio.NewScanner(file)
+  for scanner.Scan() {
+    librop:= strings.Split(scanner.Text()," ")
+		fmt.Println(librop[0])
+		fmt.Println(i,Npartes)
+		if i<Npartes{
+			info:=InfoChunk{
+				Puerto: librop[1],
+				Part: librop[0],
+			}
+			if err := stream.Send(&info); err != nil {
+				return err
+			}
+			i=i+1
+		}
+		if i==Npartes && i>0{
+			break
+		}
+    if librop[0]==book.Name{
+			i = 0
+			Npartes,err = strconv.Atoi(librop[1])
+			if err!=nil{
+				fmt.Println(Npartes,err)
+				return err
+			}
+		}
+  }
+
+ return nil
 }

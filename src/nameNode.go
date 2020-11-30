@@ -22,6 +22,8 @@ func main() {
 
 	//REGISTRO DE SERVICIOS
 	Propose.RegisterProponerServiceServer(grpcServer, &s)
+	Propose.RegisterListarServiceServer(grpcServer, &s)
+	Propose.RegisterListarChunksServiceServer(grpcServer,&s)
 	//ordenes.RegisterSeguimientoServiceServer(grpcServer, &s)
 	//FIN REGISTRO DE SERVICIOS
 	fmt.Println("nameNode FUNCIONANDO")

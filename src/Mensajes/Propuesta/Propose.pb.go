@@ -166,30 +166,164 @@ func (m *InfoMaquina) GetName() string {
 	return ""
 }
 
+type Libro struct {
+	Name                 string   `protobuf:"bytes,1,opt,name=Name,proto3" json:"Name,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *Libro) Reset()         { *m = Libro{} }
+func (m *Libro) String() string { return proto.CompactTextString(m) }
+func (*Libro) ProtoMessage()    {}
+func (*Libro) Descriptor() ([]byte, []int) {
+	return fileDescriptor_58dd9776f9ae8f06, []int{2}
+}
+
+func (m *Libro) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_Libro.Unmarshal(m, b)
+}
+func (m *Libro) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_Libro.Marshal(b, m, deterministic)
+}
+func (m *Libro) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Libro.Merge(m, src)
+}
+func (m *Libro) XXX_Size() int {
+	return xxx_messageInfo_Libro.Size(m)
+}
+func (m *Libro) XXX_DiscardUnknown() {
+	xxx_messageInfo_Libro.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Libro proto.InternalMessageInfo
+
+func (m *Libro) GetName() string {
+	if m != nil {
+		return m.Name
+	}
+	return ""
+}
+
+type ReceptStatus struct {
+	Message              string   `protobuf:"bytes,1,opt,name=Message,proto3" json:"Message,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *ReceptStatus) Reset()         { *m = ReceptStatus{} }
+func (m *ReceptStatus) String() string { return proto.CompactTextString(m) }
+func (*ReceptStatus) ProtoMessage()    {}
+func (*ReceptStatus) Descriptor() ([]byte, []int) {
+	return fileDescriptor_58dd9776f9ae8f06, []int{3}
+}
+
+func (m *ReceptStatus) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ReceptStatus.Unmarshal(m, b)
+}
+func (m *ReceptStatus) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ReceptStatus.Marshal(b, m, deterministic)
+}
+func (m *ReceptStatus) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ReceptStatus.Merge(m, src)
+}
+func (m *ReceptStatus) XXX_Size() int {
+	return xxx_messageInfo_ReceptStatus.Size(m)
+}
+func (m *ReceptStatus) XXX_DiscardUnknown() {
+	xxx_messageInfo_ReceptStatus.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ReceptStatus proto.InternalMessageInfo
+
+func (m *ReceptStatus) GetMessage() string {
+	if m != nil {
+		return m.Message
+	}
+	return ""
+}
+
+type InfoChunk struct {
+	Puerto               string   `protobuf:"bytes,1,opt,name=Puerto,proto3" json:"Puerto,omitempty"`
+	Part                 string   `protobuf:"bytes,2,opt,name=Part,proto3" json:"Part,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *InfoChunk) Reset()         { *m = InfoChunk{} }
+func (m *InfoChunk) String() string { return proto.CompactTextString(m) }
+func (*InfoChunk) ProtoMessage()    {}
+func (*InfoChunk) Descriptor() ([]byte, []int) {
+	return fileDescriptor_58dd9776f9ae8f06, []int{4}
+}
+
+func (m *InfoChunk) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_InfoChunk.Unmarshal(m, b)
+}
+func (m *InfoChunk) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_InfoChunk.Marshal(b, m, deterministic)
+}
+func (m *InfoChunk) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_InfoChunk.Merge(m, src)
+}
+func (m *InfoChunk) XXX_Size() int {
+	return xxx_messageInfo_InfoChunk.Size(m)
+}
+func (m *InfoChunk) XXX_DiscardUnknown() {
+	xxx_messageInfo_InfoChunk.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_InfoChunk proto.InternalMessageInfo
+
+func (m *InfoChunk) GetPuerto() string {
+	if m != nil {
+		return m.Puerto
+	}
+	return ""
+}
+
+func (m *InfoChunk) GetPart() string {
+	if m != nil {
+		return m.Part
+	}
+	return ""
+}
+
 func init() {
 	proto.RegisterType((*Propuesta)(nil), "Propose.Propuesta")
 	proto.RegisterType((*InfoMaquina)(nil), "Propose.InfoMaquina")
+	proto.RegisterType((*Libro)(nil), "Propose.Libro")
+	proto.RegisterType((*ReceptStatus)(nil), "Propose.ReceptStatus")
+	proto.RegisterType((*InfoChunk)(nil), "Propose.InfoChunk")
 }
 
 func init() { proto.RegisterFile("Propose.proto", fileDescriptor_58dd9776f9ae8f06) }
 
 var fileDescriptor_58dd9776f9ae8f06 = []byte{
-	// 233 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x6c, 0x90, 0x41, 0x4b, 0xc3, 0x30,
-	0x18, 0x86, 0x8d, 0xd9, 0x3a, 0xfb, 0x0d, 0x51, 0x3e, 0x86, 0x04, 0x4f, 0xa3, 0xa7, 0x9d, 0x86,
-	0x4b, 0xc0, 0x3f, 0xe0, 0x69, 0x07, 0xc7, 0x88, 0xe0, 0x3d, 0x96, 0x88, 0x45, 0x9a, 0xd4, 0x34,
-	0xf1, 0x0f, 0x88, 0xff, 0x5b, 0x9a, 0x36, 0x6d, 0x0f, 0xde, 0xde, 0xf7, 0x09, 0x24, 0xcf, 0x1b,
-	0xb8, 0x3e, 0x3b, 0xdb, 0xd8, 0x56, 0xef, 0x1b, 0x67, 0xbd, 0xc5, 0xd5, 0x50, 0x8b, 0x1f, 0x02,
-	0x79, 0x97, 0x83, 0x6e, 0xbd, 0xc2, 0x5b, 0xa0, 0xaf, 0xf5, 0x81, 0x91, 0x2d, 0xd9, 0xe5, 0xb2,
-	0x8b, 0x3d, 0xe1, 0xec, 0x32, 0x11, 0xde, 0x13, 0xc1, 0x68, 0x22, 0x02, 0x37, 0xb0, 0x7c, 0x52,
-	0xc6, 0x1f, 0xd8, 0x62, 0x4b, 0x76, 0x54, 0xf6, 0x25, 0x51, 0xce, 0x96, 0x13, 0xe5, 0x89, 0x0a,
-	0x96, 0x4d, 0x54, 0x14, 0xbf, 0x04, 0xd6, 0x47, 0xf3, 0x6e, 0x9f, 0xd5, 0x57, 0xa8, 0x8c, 0xc2,
-	0x3b, 0xc8, 0xce, 0x41, 0x3b, 0x6f, 0x07, 0x95, 0xa1, 0xe1, 0xc3, 0x4c, 0x36, 0x3a, 0xad, 0x39,
-	0xee, 0xd3, 0xb2, 0xf1, 0x44, 0xce, 0x16, 0x31, 0x58, 0x9d, 0xca, 0x8f, 0x60, 0x3e, 0xdb, 0x68,
-	0x4c, 0x65, 0xaa, 0x88, 0xb0, 0x38, 0xa9, 0x5a, 0x47, 0xe9, 0x5c, 0xc6, 0xcc, 0x8f, 0x70, 0x13,
-	0x6f, 0x33, 0xda, 0xbd, 0x68, 0xf7, 0x5d, 0x95, 0x1a, 0x1f, 0xe1, 0x2a, 0x21, 0xdc, 0x8c, 0x6f,
-	0xcd, 0x64, 0xef, 0xff, 0x31, 0x28, 0x2e, 0xde, 0xb2, 0xf8, 0xd1, 0xe2, 0x2f, 0x00, 0x00, 0xff,
-	0xff, 0x6b, 0xb3, 0x80, 0x64, 0x79, 0x01, 0x00, 0x00,
+	// 336 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x74, 0x92, 0xd1, 0x4e, 0xfa, 0x30,
+	0x14, 0xc6, 0xd9, 0x7f, 0x30, 0xfe, 0x3b, 0x80, 0x9a, 0x23, 0x9a, 0x06, 0x6f, 0xc8, 0xae, 0xb8,
+	0x22, 0xd0, 0x25, 0xfa, 0x00, 0x78, 0x43, 0x02, 0x84, 0x8c, 0xc4, 0xfb, 0x42, 0xaa, 0x2e, 0x86,
+	0x15, 0xdb, 0xce, 0x17, 0x30, 0xbe, 0xb7, 0x59, 0xb7, 0x96, 0xc6, 0xe8, 0xdd, 0x39, 0xbf, 0xb3,
+	0x73, 0xf6, 0x7d, 0x5f, 0x0a, 0x83, 0xad, 0x14, 0x27, 0xa1, 0xf8, 0xf4, 0x24, 0x85, 0x16, 0xd8,
+	0x6d, 0xda, 0xe4, 0x33, 0x80, 0xb8, 0xaa, 0x4b, 0xae, 0x34, 0xc3, 0x2b, 0x08, 0x9f, 0x8e, 0x73,
+	0x12, 0x8c, 0x83, 0x49, 0x9c, 0x55, 0x65, 0x4d, 0x28, 0xf9, 0x67, 0x09, 0xad, 0x49, 0x4a, 0x42,
+	0x4b, 0x52, 0x1c, 0x42, 0x67, 0xc1, 0x0a, 0x3d, 0x27, 0xed, 0x71, 0x30, 0x09, 0xb3, 0xba, 0xb1,
+	0x94, 0x92, 0xce, 0x99, 0x52, 0x4b, 0x53, 0x12, 0x9d, 0x69, 0x9a, 0x7c, 0x05, 0xd0, 0x5b, 0x16,
+	0xcf, 0x62, 0xcd, 0xde, 0xcb, 0xbc, 0x60, 0x78, 0x0b, 0xd1, 0xb6, 0xe4, 0x52, 0x8b, 0x46, 0x4a,
+	0xd3, 0xe1, 0xcc, 0x13, 0x6b, 0x34, 0xf5, 0x28, 0x4e, 0xad, 0x33, 0x37, 0xc9, 0x3c, 0x47, 0x04,
+	0xba, 0x9b, 0xc3, 0x6b, 0x59, 0xbc, 0x29, 0xa3, 0x38, 0xcc, 0x6c, 0x8b, 0x08, 0xed, 0x0d, 0x3b,
+	0x72, 0x23, 0x3a, 0xce, 0x4c, 0x9d, 0xdc, 0x41, 0x67, 0x95, 0xef, 0xa5, 0x70, 0xc3, 0xc0, 0x1b,
+	0x4e, 0xa0, 0x9f, 0xf1, 0x03, 0x3f, 0xe9, 0x9d, 0x66, 0xba, 0x54, 0xd5, 0xe9, 0x35, 0x57, 0x8a,
+	0xbd, 0xd8, 0xcf, 0x6c, 0x9b, 0x3c, 0x40, 0x5c, 0xb9, 0x59, 0x54, 0x3f, 0xfa, 0xd3, 0x0b, 0x42,
+	0x7b, 0xcb, 0xa4, 0x6e, 0xa2, 0x35, 0x35, 0x5d, 0xc2, 0xa5, 0x71, 0x53, 0x70, 0xb9, 0xe3, 0xf2,
+	0x23, 0x3f, 0x70, 0xbc, 0x87, 0xff, 0x16, 0xe1, 0xd0, 0x79, 0xf5, 0xc2, 0x1a, 0xfd, 0x92, 0x40,
+	0xd2, 0xa2, 0x8f, 0x30, 0x58, 0xe5, 0x4a, 0x33, 0x77, 0x28, 0x85, 0xa8, 0x06, 0x78, 0xe3, 0x16,
+	0x7c, 0x3f, 0xa3, 0x0b, 0x87, 0x4d, 0x06, 0x49, 0x6b, 0x16, 0xd0, 0x35, 0x5c, 0xd7, 0x4b, 0xc6,
+	0x8b, 0x3a, 0x8b, 0xea, 0xfb, 0x18, 0x7f, 0xac, 0x7a, 0x92, 0x5c, 0x0e, 0xd5, 0xb9, 0x7d, 0x64,
+	0x5e, 0x5f, 0xfa, 0x1d, 0x00, 0x00, 0xff, 0xff, 0xb9, 0x89, 0x80, 0xb0, 0x8e, 0x02, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -269,5 +403,203 @@ var _ProponerService_serviceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
+	Metadata: "Propose.proto",
+}
+
+// ListarServiceClient is the client API for ListarService service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
+type ListarServiceClient interface {
+	Listar(ctx context.Context, in *ReceptStatus, opts ...grpc.CallOption) (ListarService_ListarClient, error)
+}
+
+type listarServiceClient struct {
+	cc *grpc.ClientConn
+}
+
+func NewListarServiceClient(cc *grpc.ClientConn) ListarServiceClient {
+	return &listarServiceClient{cc}
+}
+
+func (c *listarServiceClient) Listar(ctx context.Context, in *ReceptStatus, opts ...grpc.CallOption) (ListarService_ListarClient, error) {
+	stream, err := c.cc.NewStream(ctx, &_ListarService_serviceDesc.Streams[0], "/Propose.ListarService/Listar", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &listarServiceListarClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type ListarService_ListarClient interface {
+	Recv() (*Libro, error)
+	grpc.ClientStream
+}
+
+type listarServiceListarClient struct {
+	grpc.ClientStream
+}
+
+func (x *listarServiceListarClient) Recv() (*Libro, error) {
+	m := new(Libro)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+// ListarServiceServer is the server API for ListarService service.
+type ListarServiceServer interface {
+	Listar(*ReceptStatus, ListarService_ListarServer) error
+}
+
+// UnimplementedListarServiceServer can be embedded to have forward compatible implementations.
+type UnimplementedListarServiceServer struct {
+}
+
+func (*UnimplementedListarServiceServer) Listar(req *ReceptStatus, srv ListarService_ListarServer) error {
+	return status.Errorf(codes.Unimplemented, "method Listar not implemented")
+}
+
+func RegisterListarServiceServer(s *grpc.Server, srv ListarServiceServer) {
+	s.RegisterService(&_ListarService_serviceDesc, srv)
+}
+
+func _ListarService_Listar_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(ReceptStatus)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(ListarServiceServer).Listar(m, &listarServiceListarServer{stream})
+}
+
+type ListarService_ListarServer interface {
+	Send(*Libro) error
+	grpc.ServerStream
+}
+
+type listarServiceListarServer struct {
+	grpc.ServerStream
+}
+
+func (x *listarServiceListarServer) Send(m *Libro) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+var _ListarService_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "Propose.ListarService",
+	HandlerType: (*ListarServiceServer)(nil),
+	Methods:     []grpc.MethodDesc{},
+	Streams: []grpc.StreamDesc{
+		{
+			StreamName:    "Listar",
+			Handler:       _ListarService_Listar_Handler,
+			ServerStreams: true,
+		},
+	},
+	Metadata: "Propose.proto",
+}
+
+// ListarChunksServiceClient is the client API for ListarChunksService service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
+type ListarChunksServiceClient interface {
+	ListarChunks(ctx context.Context, in *Libro, opts ...grpc.CallOption) (ListarChunksService_ListarChunksClient, error)
+}
+
+type listarChunksServiceClient struct {
+	cc *grpc.ClientConn
+}
+
+func NewListarChunksServiceClient(cc *grpc.ClientConn) ListarChunksServiceClient {
+	return &listarChunksServiceClient{cc}
+}
+
+func (c *listarChunksServiceClient) ListarChunks(ctx context.Context, in *Libro, opts ...grpc.CallOption) (ListarChunksService_ListarChunksClient, error) {
+	stream, err := c.cc.NewStream(ctx, &_ListarChunksService_serviceDesc.Streams[0], "/Propose.ListarChunksService/ListarChunks", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &listarChunksServiceListarChunksClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type ListarChunksService_ListarChunksClient interface {
+	Recv() (*InfoChunk, error)
+	grpc.ClientStream
+}
+
+type listarChunksServiceListarChunksClient struct {
+	grpc.ClientStream
+}
+
+func (x *listarChunksServiceListarChunksClient) Recv() (*InfoChunk, error) {
+	m := new(InfoChunk)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+// ListarChunksServiceServer is the server API for ListarChunksService service.
+type ListarChunksServiceServer interface {
+	ListarChunks(*Libro, ListarChunksService_ListarChunksServer) error
+}
+
+// UnimplementedListarChunksServiceServer can be embedded to have forward compatible implementations.
+type UnimplementedListarChunksServiceServer struct {
+}
+
+func (*UnimplementedListarChunksServiceServer) ListarChunks(req *Libro, srv ListarChunksService_ListarChunksServer) error {
+	return status.Errorf(codes.Unimplemented, "method ListarChunks not implemented")
+}
+
+func RegisterListarChunksServiceServer(s *grpc.Server, srv ListarChunksServiceServer) {
+	s.RegisterService(&_ListarChunksService_serviceDesc, srv)
+}
+
+func _ListarChunksService_ListarChunks_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(Libro)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(ListarChunksServiceServer).ListarChunks(m, &listarChunksServiceListarChunksServer{stream})
+}
+
+type ListarChunksService_ListarChunksServer interface {
+	Send(*InfoChunk) error
+	grpc.ServerStream
+}
+
+type listarChunksServiceListarChunksServer struct {
+	grpc.ServerStream
+}
+
+func (x *listarChunksServiceListarChunksServer) Send(m *InfoChunk) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+var _ListarChunksService_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "Propose.ListarChunksService",
+	HandlerType: (*ListarChunksServiceServer)(nil),
+	Methods:     []grpc.MethodDesc{},
+	Streams: []grpc.StreamDesc{
+		{
+			StreamName:    "ListarChunks",
+			Handler:       _ListarChunksService_ListarChunks_Handler,
+			ServerStreams: true,
+		},
+	},
 	Metadata: "Propose.proto",
 }

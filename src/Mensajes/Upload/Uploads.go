@@ -12,14 +12,13 @@ import (
 	"strconv"
 )
 
-var save [] Chunk
-
 type Server1 struct{
 }
 
 
 func (s *Server1) Upload(stream GuploadService_UploadServer) error {
 	//x := make(map[int][]Chunk)
+	var save [] Chunk
 	cont := 0
 	for i:=0;;i++ {
 		str, err := stream.Recv()
@@ -30,7 +29,7 @@ func (s *Server1) Upload(stream GuploadService_UploadServer) error {
 
 
 		save = append(save,*str)
-		
+
 		fmt.Println(save[i].Part)
 
 		if err != nil {
@@ -221,7 +220,6 @@ func (s *Server1) Upload(stream GuploadService_UploadServer) error {
 }
 
 func (s *Server1) Repartir(stream1 RepartirService_RepartirServer) error {
-  fmt.Println("ESTOY EN REPARTIR NODO 2")
 	for i:=0;;i++ {
 		str, err := stream1.Recv()
 		if err == io.EOF {
@@ -276,4 +274,66 @@ func (s *Server1) Repartir(stream1 RepartirService_RepartirServer) error {
 	}
   fmt.Println("AQUI al Final de repartir")
   return stream1.SendAndClose(&msg)
+}
+
+func (s *Server1) Download(stream DownloadService_DownloadServer) error {
+		var trozo string
+		for {
+			in, err := stream.Recv()
+			if err == io.EOF {
+				break
+			}
+			if err != nil {
+				return err
+			}
+			/*var Dir string = ""
+			if in.Port == ":8001"{
+				Dir="Node1"
+			}
+			if in.Port == ":7000"{
+				Dir="Node2"
+			}
+			if in.Port == ":6000"{
+				Dir="Node3"
+			}*/
+			/*fileToBeSend:=in.Namepart+".pdf"
+			//outputDirRead, _ := os.Open("/"+Dir+"/")
+			file, err := os.Open(fileToBeSend)
+			if err != nil {
+				fmt.Println(err)
+				os.Exit(1)
+			}
+			//defer file.Close()
+			fileInfo, _ := file.Stat()
+			var fileSize int64 = fileInfo.Size()*/
+			partBuffer := make([]byte, 0) //inicializa un arreglo de tamaño partSize
+
+			//file.Read(partBuffer)
+
+			trozo = in.Namepart+".pdf"
+
+			// write to disk
+			content:= Content{
+				Content: partBuffer,
+				Nametrozo: in.Namepart,
+	    	}
+			if err := stream.Send(&content); err != nil {
+			 return err
+			}
+
+		}
+		//outputDirRead, _ := os.Open("/"+Dir+"/")
+		file, err := os.Open(trozo)
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+		//defer file.Close()
+		fileInfo, _ := file.Stat()
+		var fileSize int64 = fileInfo.Size()
+		fmt.Println(fileSize)
+		partBuffer := make([]byte, fileSize) //inicializa un arreglo de tamaño partSize
+
+		file.Read(partBuffer)
+	return nil
 }

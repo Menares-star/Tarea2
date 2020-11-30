@@ -5,6 +5,14 @@ service ProponerService {
     rpc Proponer(InfoMaquina) returns (Propuesta) {}
 }
 
+service ListarService {
+    rpc Listar(ReceptStatus) returns (stream Libro) {}
+}
+
+service ListarChunksService {
+    rpc ListarChunks(Libro) returns (stream InfoChunk) {}
+}
+
 message Propuesta {
     string Vm1 = 1;
     string Vm2 = 2;
@@ -19,4 +27,18 @@ message InfoMaquina {
     Propuesta Propuesta = 2;
     int64 Nchunks = 3;
     string Name = 4;
+}
+
+
+message Libro{
+    string Name = 1;
+}
+
+message ReceptStatus {
+    string Message = 1;
+}
+
+message InfoChunk {
+    string Puerto = 1;
+    string Part = 2;
 }

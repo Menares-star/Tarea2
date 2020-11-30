@@ -23,6 +23,7 @@ func main() {
 	//REGISTRO DE SERVICIOS
 	Uploads.RegisterGuploadServiceServer(grpcServer, &s)
 	Uploads.RegisterRepartirServiceServer(grpcServer, &s)
+	Uploads.RegisterDownloadServiceServer(grpcServer,&s)
 	//ordenes.RegisterSeguimientoServiceServer(grpcServer, &s)
 	//FIN REGISTRO DE SERVICIOS
 	fmt.Println("NODO1 FUNCIONANDO")
