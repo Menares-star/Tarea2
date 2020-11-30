@@ -1,0 +1,21 @@
+syntax = "proto3";
+package Uploads;
+
+service GuploadService {
+        rpc Upload(stream Chunk) returns (UploadStatus) {}
+}
+
+service RepartirService {
+        rpc Repartir(stream Chunk) returns (UploadStatus) {}
+}
+
+message Chunk {
+        bytes Content = 1;
+        string Name = 2;
+        int32 Part = 3;
+        string Puerto =4;
+}
+
+message UploadStatus {
+        string Message = 1;
+}

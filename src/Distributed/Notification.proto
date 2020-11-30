@@ -1,0 +1,20 @@
+syntax = "proto3";
+package Notification;
+
+service NotificationService {
+    rpc Notificar(Notificacion) returns (Respuesta) {}
+}
+
+message Notificacion {
+    string Puerto1 = 1;
+    string Puerto2 = 2;
+    string Puerto3 = 3;
+    int64 NChunks1 = 5;
+    int64 NChunks2 = 6;
+    int64 NChunks3 = 7;
+    string BookName = 8;
+}
+
+message Respuesta {
+    string Resultado = 1;
+}
