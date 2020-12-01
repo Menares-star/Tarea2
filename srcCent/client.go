@@ -7,7 +7,7 @@ import (
 	"fmt"
 	//"io/ioutil"
 	"context"
-	"github.com/Menares-star/Tarea2/src/Mensajes/Propuesta"
+	"github.com/Menares-star/Tarea2/srcCent/Mensajes/Propuesta"
 	"github.com/Menares-star/Tarea2/srcCent/Mensajes/Upload"
 	"google.golang.org/grpc"
 	"io"
