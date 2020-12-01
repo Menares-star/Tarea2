@@ -15,6 +15,15 @@ import (
 type Server1 struct{
 }
 
+func crearDirectorioSiNoExiste(directorio string) {
+  if _, err := os.Stat(directorio); os.IsNotExist(err) {
+    err = os.Mkdir(directorio, 0755)
+    if err != nil {
+      // Aquí puedes manejar mejor el error, es un ejemplo
+      panic(err)
+    }
+  }
+}
 
 func (s *Server1) Upload(stream GuploadService_UploadServer) error {
 	//x := make(map[int][]Chunk)
@@ -70,8 +79,9 @@ func (s *Server1) Upload(stream GuploadService_UploadServer) error {
 
   if propFinal.Vm1=="dist74:8001"{
     if propFinal.Vm1==port{
+			crearDirectorioSiNoExiste("Node1")
       for ;i<int(propFinal.Cant1);i++{
-        fileName := "Node1/"+name +"_part_" + strconv.FormatUint(uint64(i), 10) + ".pdf"
+        fileName := "/Node1/"+name +"_part_" + strconv.FormatUint(uint64(i), 10) + ".pdf"
     		_, err := os.Create(fileName)
 
     		if err != nil {
@@ -118,7 +128,7 @@ func (s *Server1) Upload(stream GuploadService_UploadServer) error {
   if propFinal.Vm2=="dist75:7000"{
     if propFinal.Vm2==port{
       for ;i<int(propFinal.Cant1+propFinal.Cant2);i++{
-        fileName := "Node2/"+name +"_part_" + strconv.FormatUint(uint64(i), 10) + ".pdf"
+        fileName := "/Node2/"+name +"_part_" + strconv.FormatUint(uint64(i), 10) + ".pdf"
     		_, err := os.Create(fileName)
 
     		if err != nil {
@@ -165,7 +175,7 @@ func (s *Server1) Upload(stream GuploadService_UploadServer) error {
   if propFinal.Vm3=="dist76:6000"{
     if propFinal.Vm3==port{
       for ;i<int(propFinal.Cant1+propFinal.Cant2+propFinal.Cant3);i++{
-        fileName := "Node3/"+name +"_part_" + strconv.FormatUint(uint64(i), 10) + ".pdf"
+        fileName := "/Node3/"+name +"_part_" + strconv.FormatUint(uint64(i), 10) + ".pdf"
     		_, err := os.Create(fileName)
 
     		if err != nil {
@@ -230,7 +240,8 @@ func (s *Server1) Repartir(stream1 RepartirService_RepartirServer) error {
 		}
 
     if str.Puerto=="dist74:8001"{
-      fileName := "Node1/"+str.Name +"_part_" + strconv.FormatUint(uint64(str.Part), 10) + ".pdf"
+			crearDirectorioSiNoExiste("Node1")
+      fileName := "/Node1/"+str.Name +"_part_" + strconv.FormatUint(uint64(str.Part), 10) + ".pdf"
       _, err := os.Create(fileName)
 
       if err != nil {
@@ -242,7 +253,8 @@ func (s *Server1) Repartir(stream1 RepartirService_RepartirServer) error {
     }
 
     if str.Puerto=="dist75:7000"{
-      fileName := "Node2/"+str.Name +"_part_" + strconv.FormatUint(uint64(str.Part), 10) + ".pdf"
+			crearDirectorioSiNoExiste("Node2")
+      fileName := "/Node2/"+str.Name +"_part_" + strconv.FormatUint(uint64(str.Part), 10) + ".pdf"
       _, err := os.Create(fileName)
 
       if err != nil {
@@ -254,7 +266,8 @@ func (s *Server1) Repartir(stream1 RepartirService_RepartirServer) error {
     }
 
     if str.Puerto=="dist76:6000"{
-      fileName := "Node3/"+str.Name +"_part_" + strconv.FormatUint(uint64(str.Part), 10) + ".pdf"
+			crearDirectorioSiNoExiste("Node3")
+      fileName := "/Node3/"+str.Name +"_part_" + strconv.FormatUint(uint64(str.Part), 10) + ".pdf"
       _, err := os.Create(fileName)
 
       if err != nil {
