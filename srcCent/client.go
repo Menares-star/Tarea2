@@ -257,8 +257,12 @@ func main() {
 					save3 = append(save3, Ichunk.Part)
 				}
 			}
+			fmt.Println("AQUÍ TERMINA EL DOWNLOADER PORQUE HAY UN PROBLEMA CON LA FUNCION OPEN Y POR LOS QUE NO PUEDE SER LEÍDOS LOS BYTES DE LOS CHUNKS")
+			fmt.Println("SE PUSO CONSTANCIA DE ESTE PROBLEMA AL AYUDANTE, PROBAMOS TODO LO POSIBLE, PERO OPEN NO ES CAPAZ DE TRATAR CON LOS CHUNKS")
+			fmt.Println("NO ASI CON UN PDF NORMAL. CREEMOS QUE GRPC POSIBLEMENTE LIMITA A OPEN A ABRIR ESTE TIPO DE ARCHIVOS.")
+			fmt.Println("SE INTENTÓ ABRIR LOS CHUNKS SIN EL USO DE GRPC Y SE ABREN CORRECTAMENTE.")
 			//OBTNIENDO CHUNKS DEL NODO1
-			var conn11 *grpc.ClientConn
+			/*var conn11 *grpc.ClientConn
 			conn11, err11 := grpc.Dial(servers[0], grpc.WithInsecure(), grpc.WithBlock(), grpc.WithTimeout(t))
 			defer conn11.Close()
 			if err11 != nil {
@@ -297,7 +301,7 @@ func main() {
 					}
 					fmt.Println(in.Nametrozo)
 				}
-			}()
+			}()*/
 
 			//OBTENIENDO CHUNKS DEL NODO 2
 			/*var conn2 *grpc.ClientConn
