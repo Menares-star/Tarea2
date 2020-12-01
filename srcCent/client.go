@@ -68,9 +68,9 @@ func folderReader() string {
 func main() {
 	var flag bool = true
 	servers := make([]string, 3)
-	servers[0] = ":8001"
-	servers[1] = ":7000"
-	servers[2] = ":6000"
+	servers[0] = "dist74:8001"
+	servers[1] = "dist75:7000"
+	servers[2] = "dist76:6000"
 	for flag == true {
 
 		var cliente int
@@ -183,14 +183,14 @@ func main() {
 		if cliente == 2 {
 
 			fmt.Println("Soy downloader!")
-			fmt.Println("SORRY, NOT WORKING")
-			/*
+			//fmt.Println("SORRY, NOT WORKING")
+
 			var t time.Duration = 5000000000
 			var conn *grpc.ClientConn
-			conn, err := grpc.Dial(":9002", grpc.WithInsecure(), grpc.WithBlock(), grpc.WithTimeout(t))
+			conn, err := grpc.Dial("dist73:9002", grpc.WithInsecure(), grpc.WithBlock(), grpc.WithTimeout(t))
 			defer conn.Close()
 			if err != nil {
-				fmt.Println("Servidor :9002 no disponible: ", err)
+				fmt.Println("Servidor dist73:9002 no disponible: ", err)
 			}
 			want := Propose.ReceptStatus{
 				Message: "ENTREGAME LA LISTA DE LIBROS",
@@ -225,10 +225,10 @@ func main() {
 			}
 
 			var conn1 *grpc.ClientConn
-			conn1, err1 := grpc.Dial(":9002", grpc.WithInsecure(), grpc.WithBlock(), grpc.WithTimeout(t))
+			conn1, err1 := grpc.Dial("dist73:9002", grpc.WithInsecure(), grpc.WithBlock(), grpc.WithTimeout(t))
 			defer conn1.Close()
 			if err1 != nil {
-				fmt.Println("Servidor :9002 no disponible: ", err1)
+				fmt.Println("Servidor dist73:9002 no disponible: ", err1)
 			}
 			streaming1 := Propose.NewListarChunksServiceClient(conn1)
 			stream1, err := streaming1.ListarChunks(context.Background(), &sendbook)
@@ -270,6 +270,20 @@ func main() {
 				log.Fatalf("%v.Download(_) = _, %v", streaming11, err)
 			}
 			waitc := make(chan struct{})
+			go func(){
+				for i:=0;i<len(save1);i++ {
+					info:=Uploads.InfoChunk{
+						Port: servers[0],
+						Namepart: save1[i],
+					}
+					if err := stream11.Send(&info); err != nil {
+						log.Fatalf("Failed to send a info: %v", err)
+					}
+				}
+				if err := stream11.CloseSend(); err != nil {
+					log.Println(err)
+				}
+			}()
 			go func() {
 				for {
 					in, err := stream11.Recv()
@@ -284,18 +298,6 @@ func main() {
 					fmt.Println(in.Nametrozo)
 				}
 			}()
-			for i := 0; i < len(save1); i++ {
-				info := Uploads.InfoChunk{
-					Port:     servers[0],
-					Namepart: save1[i],
-				}
-				if err := stream11.Send(&info); err != nil {
-					log.Fatalf("Failed to send a info: %v", err)
-				}
-			}
-			stream11.CloseSend()
-			<-waitc
-
 			/*var conn2 *grpc.ClientConn
 			conn2, err2 := grpc.Dial(servers[1],grpc.WithInsecure(),grpc.WithBlock(),grpc.WithTimeout(t))
 			defer conn2.Close()

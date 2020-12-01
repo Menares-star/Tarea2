@@ -37,16 +37,16 @@ func (s *Server1) Upload(stream GuploadService_UploadServer) error {
 	}
 
 	var conn *grpc.ClientConn
-	conn, err := grpc.Dial(":9002",grpc.WithInsecure(),grpc.WithBlock())
+	conn, err := grpc.Dial("dist73:9002",grpc.WithInsecure(),grpc.WithBlock())
 	if err != nil{
-		fmt.Println("Servidor :9002 no disponible: ", err)
+		fmt.Println("Servidor dist73:9002 no disponible: ", err)
 	}
 	defer conn.Close()
 
 	propose := Propose.Propuesta {
-		Vm1: ":8001",
-		Vm2: ":7000",
-		Vm3: ":6000",
+		Vm1: "dist74:8001",
+		Vm2: "dist75:7000",
+		Vm3: "dist76:6000",
 	}
 
   var port string = save[len(save)-1].Puerto
@@ -68,7 +68,7 @@ func (s *Server1) Upload(stream GuploadService_UploadServer) error {
 
   var i int = 0
 
-  if propFinal.Vm1==":8001"{
+  if propFinal.Vm1=="dist74:8001"{
     if propFinal.Vm1==port{
       for ;i<int(propFinal.Cant1);i++{
         fileName := "Node1/"+name +"_part_" + strconv.FormatUint(uint64(i), 10) + ".pdf"
@@ -84,9 +84,9 @@ func (s *Server1) Upload(stream GuploadService_UploadServer) error {
     }else{
 
       var conn1 *grpc.ClientConn
-      conn1, err1 := grpc.Dial(":8001",grpc.WithInsecure(),grpc.WithBlock())
+      conn1, err1 := grpc.Dial("dist74:8001",grpc.WithInsecure(),grpc.WithBlock())
       if err1 != nil{
-        fmt.Println("Servidor :8001 no disponible: ", err1)
+        fmt.Println("Servidor dist74:8001 no disponible: ", err1)
       }
       defer conn1.Close()
       streaming:= NewRepartirServiceClient(conn1)
@@ -96,7 +96,7 @@ func (s *Server1) Upload(stream GuploadService_UploadServer) error {
 		  }
 		  fmt.Println("ENVIANDO A NODO 1")
       for ;i<int(propFinal.Cant1);i++{
-        save[i].Puerto = ":8001"
+        save[i].Puerto = "dist74:8001"
         chunk:= Chunk{
   				Content: save[i].Content,
   				Name: save[i].Name,
@@ -115,7 +115,7 @@ func (s *Server1) Upload(stream GuploadService_UploadServer) error {
     }
   }
 
-  if propFinal.Vm2==":7000"{
+  if propFinal.Vm2=="dist75:7000"{
     if propFinal.Vm2==port{
       for ;i<int(propFinal.Cant1+propFinal.Cant2);i++{
         fileName := "Node2/"+name +"_part_" + strconv.FormatUint(uint64(i), 10) + ".pdf"
@@ -130,9 +130,9 @@ func (s *Server1) Upload(stream GuploadService_UploadServer) error {
       }
     }else{
       var conn2 *grpc.ClientConn
-      conn2, err2 := grpc.Dial(":7000",grpc.WithInsecure(),grpc.WithBlock())
+      conn2, err2 := grpc.Dial("dist75:7000",grpc.WithInsecure(),grpc.WithBlock())
       if err2 != nil{
-        fmt.Println("Servidor :7000 no disponible: ", err2)
+        fmt.Println("Servidor dist75:7000 no disponible: ", err2)
       }
       defer conn2.Close()
       streaming:=NewRepartirServiceClient(conn2)
@@ -142,7 +142,7 @@ func (s *Server1) Upload(stream GuploadService_UploadServer) error {
   		}
       fmt.Println("ENVIANDO A NODO 2")
       for ;i<int(propFinal.Cant1+propFinal.Cant2);i++{
-        save[i].Puerto = ":7000"
+        save[i].Puerto = "dist75:7000"
         chunk:= Chunk{
           Content: save[i].Content,
           Name: save[i].Name,
@@ -162,7 +162,7 @@ func (s *Server1) Upload(stream GuploadService_UploadServer) error {
     }
   }
 
-  if propFinal.Vm3==":6000"{
+  if propFinal.Vm3=="dist76:6000"{
     if propFinal.Vm3==port{
       for ;i<int(propFinal.Cant1+propFinal.Cant2+propFinal.Cant3);i++{
         fileName := "Node3/"+name +"_part_" + strconv.FormatUint(uint64(i), 10) + ".pdf"
@@ -177,9 +177,9 @@ func (s *Server1) Upload(stream GuploadService_UploadServer) error {
       }
     }else{
       var conn3 *grpc.ClientConn
-      conn3, err3 := grpc.Dial(":6000",grpc.WithInsecure(),grpc.WithBlock())
+      conn3, err3 := grpc.Dial("dist76:6000",grpc.WithInsecure(),grpc.WithBlock())
       if err3 != nil{
-        fmt.Println("Servidor :6000 no disponible: ", err3)
+        fmt.Println("Servidor dist76:6000 no disponible: ", err3)
       }
       defer conn3.Close()
       streaming:= NewRepartirServiceClient(conn3)
@@ -189,7 +189,7 @@ func (s *Server1) Upload(stream GuploadService_UploadServer) error {
 		  }
 		  fmt.Println("ENVIANDO A NODO 3")
       for ;i<int(propFinal.Cant1+propFinal.Cant2+propFinal.Cant3);i++{
-        save[i].Puerto = ":6000"
+        save[i].Puerto = "dist76:6000"
         chunk:= Chunk{
           Content: save[i].Content,
           Name: save[i].Name,
@@ -229,7 +229,7 @@ func (s *Server1) Repartir(stream1 RepartirService_RepartirServer) error {
 			return stream1.SendAndClose(&msg)
 		}
 
-    if str.Puerto==":8001"{
+    if str.Puerto=="dist74:8001"{
       fileName := "Node1/"+str.Name +"_part_" + strconv.FormatUint(uint64(str.Part), 10) + ".pdf"
       _, err := os.Create(fileName)
 
@@ -241,7 +241,7 @@ func (s *Server1) Repartir(stream1 RepartirService_RepartirServer) error {
       ioutil.WriteFile(fileName, str.Content, os.ModeAppend)
     }
 
-    if str.Puerto==":7000"{
+    if str.Puerto=="dist75:7000"{
       fileName := "Node2/"+str.Name +"_part_" + strconv.FormatUint(uint64(str.Part), 10) + ".pdf"
       _, err := os.Create(fileName)
 
@@ -253,7 +253,7 @@ func (s *Server1) Repartir(stream1 RepartirService_RepartirServer) error {
       ioutil.WriteFile(fileName, str.Content, os.ModeAppend)
     }
 
-    if str.Puerto==":6000"{
+    if str.Puerto=="dist76:6000"{
       fileName := "Node3/"+str.Name +"_part_" + strconv.FormatUint(uint64(str.Part), 10) + ".pdf"
       _, err := os.Create(fileName)
 
@@ -282,29 +282,28 @@ func (s *Server1) Download(stream DownloadService_DownloadServer) error {
 			if err != nil {
 				return err
 			}
-			/*var Dir string = ""
-			if in.Port == ":8001"{
+			var Dir string = ""
+			if in.Port == "dist74:8001"{
 				Dir="Node1"
 			}
-			if in.Port == ":7000"{
+			if in.Port == "dist75:7000"{
 				Dir="Node2"
 			}
-			if in.Port == ":6000"{
+			if in.Port == "dist76:6000"{
 				Dir="Node3"
-			}*/
-			/*fileToBeSend:=in.Namepart+".pdf"
-			//outputDirRead, _ := os.Open("/"+Dir+"/")
+			}
+			fileToBeSend:="./"+Dir+"/"+in.Namepart+".pdf"
 			file, err := os.Open(fileToBeSend)
 			if err != nil {
 				fmt.Println(err)
 				os.Exit(1)
 			}
-			//defer file.Close()
+			defer file.Close()
 			fileInfo, _ := file.Stat()
-			var fileSize int64 = fileInfo.Size()*/
+			var fileSize int64 = fileInfo.Size()
 			partBuffer := make([]byte, 0) //inicializa un arreglo de tamaño partSize
 
-			//file.Read(partBuffer)
+			file.Read(partBuffer)
 
 			trozo = in.Namepart+".pdf"
 
@@ -318,21 +317,5 @@ func (s *Server1) Download(stream DownloadService_DownloadServer) error {
 			}
 
 		}
-		//outputDirRead, _ := os.Open("/"+Dir+"/")
-		//fmt.Println("Voy a abrir el trozo: ")
-		trozo = "Uploads/Alicia_en_el_pais_de_las_maravillas-Carroll_Lewis.pdf"
-		fmt.Println(trozo)
-		file, err := os.Open(trozo)
-		if err != nil {
-			fmt.Println(err)
-			os.Exit(1)
-		}
-		//defer file.Close()
-		fileInfo, _ := file.Stat()
-		var fileSize int64 = fileInfo.Size()
-		fmt.Println(fileSize)
-		partBuffer := make([]byte, fileSize) //inicializa un arreglo de tamaño partSize
-
-		file.Read(partBuffer)
 	return nil
 }

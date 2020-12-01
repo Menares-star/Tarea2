@@ -26,9 +26,9 @@ func (s *Server) Proponer(ctx context.Context, prop *InfoMaquina) (*Propuesta, e
 	start := time.Now()
 
 	servers:=make([]string,3)
-	servers[0]=":8001"
-	servers[1]=":7000"
-	servers[2]=":6000"
+	servers[0]="dist74:8001"
+	servers[1]="dist75:7000"
+	servers[2]="dist76:6000"
 
 	var cont int = 1
 	var available1 string = servers[0]
