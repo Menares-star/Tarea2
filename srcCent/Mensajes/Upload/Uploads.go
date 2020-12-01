@@ -273,7 +273,6 @@ func (s *Server1) Repartir(stream1 RepartirService_RepartirServer) error {
 }
 
 func (s *Server1) Download(stream DownloadService_DownloadServer) error {
-		var trozo string
 		for {
 			in, err := stream.Recv()
 			if err == io.EOF {
@@ -301,8 +300,7 @@ func (s *Server1) Download(stream DownloadService_DownloadServer) error {
 			defer file.Close()
 			fileInfo, _ := file.Stat()
 			var fileSize int64 = fileInfo.Size()
-			partBuffer := make([]byte, 0) //inicializa un arreglo de tamaño partSize
-
+			partBuffer := make([]byte, fileSize) //inicializa un arreglo de tamaño partSize
 			file.Read(partBuffer)
 
 			trozo = in.Namepart+".pdf"
