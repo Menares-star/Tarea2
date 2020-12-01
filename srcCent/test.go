@@ -10,7 +10,7 @@ import(
 
 func main() {
   //var save[] string
-  file, err := os.OpenFile("Node1/Node1/Alicia_en_el_pais_de_las_maravillas-Carroll_Lewis_parte_1.pdf", os.O_RDONLY, 0600)
+  file, err := os.OpenFile("Node1/Alicia_en_el_pais_de_las_maravillas-Carroll_Lewis_parte_1.pdf", os.O_RDONLY, 0600)
   if err != nil {
     log.Fatal(err)
   }
