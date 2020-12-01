@@ -270,6 +270,20 @@ func main() {
 					log.Fatalf("%v.Download(_) = _, %v", streaming11, err)
 				}
 				waitc := make(chan struct{})
+				go func(){
+					for i:=0;i<len(save1);i++ {
+						info:=Uploads.InfoChunk{
+							Port: servers[0],
+							Namepart: save1[i],
+						}
+					  if err := stream11.Send(&info); err != nil {
+					    log.Fatalf("Failed to send a info: %v", err)
+				  	}
+					}
+					if err := stream11.CloseSend(); err != nil {
+						log.Println(err)
+					}
+				}()
 				go func() {
 				  for {
 				    in, err := stream11.Recv()
@@ -284,16 +298,7 @@ func main() {
 						fmt.Println(in.Nametrozo)
 				  }
 				}()
-				for i:=0;i<len(save1);i++ {
-					info:=Uploads.InfoChunk{
-						Port: servers[0],
-						Namepart: save1[i],
-					}
-				  if err := stream11.Send(&info); err != nil {
-				    log.Fatalf("Failed to send a info: %v", err)
-				  }
-				}
-				stream11.CloseSend()
+
 				<-waitc
 
 

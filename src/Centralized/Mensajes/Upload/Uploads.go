@@ -286,7 +286,7 @@ func (s *Server1) Download(stream DownloadService_DownloadServer) error {
 			if err != nil {
 				return err
 			}
-			/*var Dir string = ""
+			var Dir string = ""
 			if in.Port == ":8001"{
 				Dir="Node1"
 			}
@@ -295,20 +295,19 @@ func (s *Server1) Download(stream DownloadService_DownloadServer) error {
 			}
 			if in.Port == ":6000"{
 				Dir="Node3"
-			}*/
-			/*fileToBeSend:=in.Namepart+".pdf"
-			//outputDirRead, _ := os.Open("/"+Dir+"/")
+			}
+			fileToBeSend:="./"+Dir+"/"+in.Namepart+".pdf"
 			file, err := os.Open(fileToBeSend)
 			if err != nil {
 				fmt.Println(err)
 				os.Exit(1)
 			}
-			//defer file.Close()
+			defer file.Close()
 			fileInfo, _ := file.Stat()
-			var fileSize int64 = fileInfo.Size()*/
+			var fileSize int64 = fileInfo.Size()
 			partBuffer := make([]byte, 0) //inicializa un arreglo de tamaño partSize
 
-			//file.Read(partBuffer)
+			file.Read(partBuffer)
 
 			trozo = in.Namepart+".pdf"
 
@@ -322,18 +321,5 @@ func (s *Server1) Download(stream DownloadService_DownloadServer) error {
 			}
 
 		}
-		//outputDirRead, _ := os.Open("/"+Dir+"/")
-		file, err := os.Open(trozo)
-		if err != nil {
-			fmt.Println(err)
-			os.Exit(1)
-		}
-		//defer file.Close()
-		fileInfo, _ := file.Stat()
-		var fileSize int64 = fileInfo.Size()
-		fmt.Println(fileSize)
-		partBuffer := make([]byte, fileSize) //inicializa un arreglo de tamaño partSize
-
-		file.Read(partBuffer)
 	return nil
 }
