@@ -296,6 +296,7 @@ func (s *Server1) Download(stream DownloadService_DownloadServer) error {
 			}
 			var Dir string = ""
 			if in.Port == "dist74:8001"{
+				crearDirectorioSiNoExiste("Node1")
 				Dir="Node1"
 			}
 			if in.Port == "dist75:7000"{
