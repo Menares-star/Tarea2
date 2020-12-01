@@ -81,7 +81,7 @@ func (s *Server1) Upload(stream GuploadService_UploadServer) error {
     if propFinal.Vm1==port{
 			crearDirectorioSiNoExiste("Node1")
       for ;i<int(propFinal.Cant1);i++{
-        fileName := "/Node1/"+name +"_part_" + strconv.FormatUint(uint64(i), 10) + ".pdf"
+        fileName := "./Node1/"+name +"_part_" + strconv.FormatUint(uint64(i), 10) + ".pdf"
     		_, err := os.Create(fileName)
 
     		if err != nil {
