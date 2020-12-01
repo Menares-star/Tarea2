@@ -303,8 +303,6 @@ func (s *Server1) Download(stream DownloadService_DownloadServer) error {
 			partBuffer := make([]byte, fileSize) //inicializa un arreglo de tamaño partSize
 			file.Read(partBuffer)
 
-			trozo = in.Namepart+".pdf"
-
 			// write to disk
 			content:= Content{
 				Content: partBuffer,
